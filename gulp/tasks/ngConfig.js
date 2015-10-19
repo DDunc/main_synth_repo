@@ -1,4 +1,4 @@
-var gulp = require('gulp');
+/* var gulp = require('gulp');
 var ngConfig = require ('gulp-ng-config');
 
 var config = require('../config').ngConfig;
@@ -15,4 +15,4 @@ gulp.task('ngConfig', function() {
   .pipe(ngConfig('gisty.config'))
   .pipe(gulp.dest(config.dest));
 
-});
+}); */
