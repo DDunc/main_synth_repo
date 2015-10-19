@@ -23,6 +23,8 @@
 		"url": ""
 	},
 	"dependencies": {
+		"mongodb": "^2.0.43",
+    "mongoose": "^4.1.7",
 		"angular": "^1.4.7",
 		"angular-route": "^1.4.7",
 		"bourbon": "^4.2.5",

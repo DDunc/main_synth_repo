@@ -9,14 +9,19 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+var addToDb = require(__dirname + '/backend/lib/add_to_db');
+var handleError = require(__dirname + '/backend/lib/handle_error');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
+var User = require(__dirname + "/models/user");
 
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
 var port = process.env.PORT || 3000;
-var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -35,12 +40,32 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:" + port + "/auth/google/return"
   },
   function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification
+    // asynchronous verification, will need to be refactored
+    //this next tick is allegedly uneccessary, will test without
+    //TODO: seperate passport auth and usercreation, then use req.user info to make
+    //the db
     process.nextTick(function () {
-    //with a real DB we'd return our own user object rather than the profile
+      console.log(profile);
+     User.findOne({'googleId': profile.id}, function(err, user) {
+      if (err){
+        return handleError(err, res);
+      }
+
+      if(!user) {
+        var newUser = new User();
+        newUser.googleId = profile.id;
+        newUser.displayName = profile.displayName;
+        newUser.googleProfile = profile;
+        newUser.save(function(err, user){
+          if (err)
+            console.log(err);
+        });
+      }
+      //second argument gets added to req.user
       return done(null, profile);
     });
   }
+  )};
 ));
 
 var app = express();

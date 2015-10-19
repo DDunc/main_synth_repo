@@ -29,3 +29,6 @@ build
 
 #local environmental variables
 .env
+
+#database folder
+synth_dev
