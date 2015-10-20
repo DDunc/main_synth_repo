@@ -1,16 +1,8 @@
+// requires synthesizerModule import first!!!
+
 var ctx = new AudioContext();
 
-var soundConfig = function(ctx, frequency) {
-  this.osc = ctx.createOscillator();
-  this.osc.frequency.value = frequency;
-  this.gainNode = ctx.createGain();
-  this.osc.start(0);
-  this.osc.connect(this.gainNode);
-  this.gainNode.connect(ctx.destination);
-  this.gainNode.gain.value = 0;
-};
-
-var Key = function(ctx, el, note, frequency, soundConfig) {
+var Key = function(ctx, el, note, frequency, synthesizerModule) {
 
   this.el = el;
   this.note = note;
