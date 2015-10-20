@@ -28,11 +28,11 @@ var Key = function(ctx, el, note, generator) {
   };
 
   this.el.addEventListener('touchstart', function(){
-    this.gainNode.gain.value = 1;
+    this.generator.start();
   }.bind(this));
 
   this.el.addEventListener('touchend', function(){
-    this.gainNode.gain.value = 0;
+    this.generator.stop();
   }.bind(this));
    
 };

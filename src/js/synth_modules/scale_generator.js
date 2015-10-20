@@ -1,17 +1,18 @@
 var generateScale = function(frequency, name){
 
+  var _frequency = frequency
   var min, max;
   var scale = [];
 
-  while (frequency > 20) {
-   frequency /= 2;
+  while (_frequency > 20) {
+   _frequency /= 2;
   }
-  min = frequency * 2;
+  min = _frequency * 2;
 
-  while (frequency < 20000) {
-   frequency*= 2;
+  while (_frequency < 20000) {
+   _frequency*= 2;
   }
-  max = frequency / 2;
+  max = _frequency / 2;
 
 
   while (min <= max) {
@@ -30,10 +31,10 @@ var generateScale = function(frequency, name){
   }
 
   scale.name = name;
-  var start = scale.indexOf(440);
-  var end = scale.indexOf(880);
+  var start = scale.indexOf(frequency);
+  var end = scale.indexOf(frequency * 2);
   return scale.slice(start,end + 1);
 };
 
-var s = generateScale(440,'A');
-console.log(s);
+//var s = generateScale(220,'A');
+//console.log(s);

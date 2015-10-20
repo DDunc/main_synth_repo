@@ -2,6 +2,7 @@
 // for each key, a new generator is created with a frequency that is generated
 // by the frequency generator
 
+var scale = generateScale(440); 
 
 var Generator = function(ctx, frequency) {
   this.name = 'default';
@@ -20,4 +21,8 @@ Generator.prototype.start = function() {
 
 Generator.prototype.stop = function() {
   this.gainNode.gain.value = 0;
+};
+
+Generator.prototype.getTone = function() {
+
 };
