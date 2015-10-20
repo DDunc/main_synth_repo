@@ -21,9 +21,8 @@ var User = require(__dirname + "/models/user");
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
 var port = process.env.PORT || 3000;
-var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
-
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "375108974258-mc5k6qfg1mo3cejsse5ecr9vb4rduodu.apps.googleusercontent.com";
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "HIT2GBdyX0Pt92ZTszk4Phfk";
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
