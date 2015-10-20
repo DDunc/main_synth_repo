@@ -3,7 +3,7 @@
 // by the frequency generator
 
 var Generator = function(ctx, frequency) {
-  this.name = 'default';
+  this.patchName = 'spaceBass';
   this.noteName = 'A0';
   this.osc = ctx.createOscillator();
   this.osc.frequency.value = frequency;
@@ -25,3 +25,24 @@ Generator.prototype.stop = function() {
 Generator.prototype.getTone = function() {
 
 };
+
+Generator.prototype.export = function() {
+  return {
+    username: 'al_420_jesusBlunt',
+    patchName : this.patchName, 
+    freqRange: {
+        min: 440,
+        max: 880
+    },
+    src: 'oscillator',
+    processing: ['gain'], 
+
+  };
+};
+
+
+/*
+ * 
+ *
+ *
+ */
