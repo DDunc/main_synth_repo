@@ -14,15 +14,18 @@ var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
-//var usersRouter = require(__dirname + '/backend/routes/users_routes');
-
-
+var FacebookStrategy = require("passport-facebook");
+//var presetRouter = require(__dirname + '/backend/routes/users_routes');
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
 var port = process.env.PORT || 3000;
-var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "375108974258-mc5k6qfg1mo3cejsse5ecr9vb4rduodu.apps.googleusercontent.com";
-var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "HIT2GBdyX0Pt92ZTszk4Phfk";
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+var FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
+var FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -30,6 +33,23 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
+
+//
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:" + port + "/auth/facebook/callback",
+    enableProof: true
+  },
+  function(accessToken, refreshToken, profile, done) {
+    //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      //console.log(user);
+      process.nextTick(function() {
+        console.log(profile);
+        return done(null, profile);
+      });
+  }
+));
 
 // Use the GoogleStrategy within Passport
 //   Strategies in Passport require a `verify` function, which accept
@@ -59,6 +79,7 @@ var app = express();
 }); */
 
 // configure Express
+  //app.use('/api', presetRouter);
   app.use(logger('dev'));
   app.use(cookieParser());
   app.use(bodyParser.json());
@@ -72,6 +93,22 @@ var app = express();
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.static(__dirname + '/build'));
+
+
+
+  app.get('/auth/facebook',
+  passport.authenticate('facebook'),
+  function(req, res){
+    // The request will be redirected to Facebook for authentication, so
+    // this function will not be called.
+  });
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
   //app.use(express.static(__dirname + '/src/html/login.html'));
 
 //app.use('/api', usersRouter);
@@ -112,6 +149,7 @@ app.get('/auth/google/return',
     console.log(req.user);
     console.log(req.account);
     User.findOne({'googleId': req.user.id}, function(err, user) {
+      req.dbId = user._id;
       if (err){
         return handleError(err, res);
       }
@@ -124,12 +162,15 @@ app.get('/auth/google/return',
         newUser.save(function(err, user){
           if (err)
             console.log(err);
+          res.redirect("/#user/" + user._id);
         });
       }
-        res.redirect('/');
     });
   });
 
+  
+
+//there i also a req.login request per https://github.com/jaredhanson/passport/blob/master/lib/http/request.js
 app.get('/logout', function(req, res){
   console.log("logout successful");
   req.logout();
