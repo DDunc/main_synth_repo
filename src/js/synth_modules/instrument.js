@@ -44,14 +44,39 @@ var Sequencer = function() {
   this.stopButton = document.getElementById('stop');
   this.playButton = document.getElementById('play');
   this.pad_elements = this.el.querySelectorAll('div');
+  this.writeMode = false;
 
   // sequencer model 
   this.pads = [];
 
+  // event listeners, delegation
+  // when we touch a pad 
+  this.el.addEventListener('touchstart', function(e) {
+    if (e.target.className === 'pad') {
+      this.writeMode = true;
+      console.log('pad write mode is ', (this.writeMode) ? 'on' : 'off');
+      console.log(e.target.innerHTML);
+    }
+  }.bind(this));
+  // when we let go of a pad 
+  this.el.addEventListener('touchend', function(e) {
+    if (e.target.className === 'pad') {
+      this.writeMode = false;
+      console.log('pad write mode is ', (this.writeMode) ? 'on' : 'off');
+      console.log(e.target.innerHTML);
+    }
+  }.bind(this));
+
   // each pad is an array of sounds
   for (var i = 0; i < this.pad_elements.length ; i++) {
-    this.pads[i] = [];  
+    this.pads[i] = {
+      el:     this.pad_elements[i],
+      notes:  [],
+    };  
   }
+
+  // set event listeners on each pad
+  //
 
   // events
   this.playButton.addEventListener(this.play);

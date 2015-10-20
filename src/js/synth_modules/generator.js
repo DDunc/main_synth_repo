@@ -2,8 +2,6 @@
 // for each key, a new generator is created with a frequency that is generated
 // by the frequency generator
 
-var scale = generateScale(440); 
-
 var Generator = function(ctx, frequency) {
   this.name = 'default';
   this.osc = ctx.createOscillator();
