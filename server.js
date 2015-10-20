@@ -14,10 +14,9 @@ var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
+var usersRouter = require(__dirname + '/backend/routes/users_routes');
 
-var usersRouter = require(__dirname + '/routes/users_routes');
 
-app.use('/api', usersRouter);
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
@@ -39,7 +38,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:" + port + "/api/auth/google/return"
+    callbackURL: "http://localhost:" + port + "/auth/google/return"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, will need to be refactored
@@ -47,13 +46,18 @@ passport.use(new GoogleStrategy({
     //TODO: seperate passport auth and usercreation, then use req.user info to make
     //the db
     process.nextTick(function () {
-      console.log(profile);
-      //second argument gets added to req.user
+    //second argument gets added to req.user
       return done(null, profile);
   }
   )}));
 
 var app = express();
+
+/* app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+}); */
 
 // configure Express
   app.use(logger('dev'));
@@ -68,45 +72,67 @@ var app = express();
   );
   app.use(passport.initialize());
   app.use(passport.session());
-  //app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/build'));
+  //app.use(express.static(__dirname + '/src/html/login.html'));
 
-app.get('/', function(req, res){
+app.use('/api', usersRouter);
+
+
+
+/* app.get('/', function(req, res){
   res.send({ user: req.user }); //with no user, sends empty object;
-});
+}); */
 
 app.get('/account', ensureAuthenticated, function(req, res){
   res.send({ user: req.user });
 });
 
-app.get('/login', function(req, res){
+/* app.get('/login', function(req, res){
   res.send({ user: req.user });
-});
+}); */
 
 // GET /auth/google
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Google authentication will involve
 //   redirecting the user to google.com.  After authorization, Google
 //   will redirect the user back to this application at /auth/google/callback
-/* app.get('/auth/google',
+ app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
-  }); */
+  });
 
 // GET /auth/google/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this case, will redirect the user to the home page but display
-//   the google profile object.
-/*app.get('/auth/google/return',
+//   login page.
+app.get('/auth/google/return',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
-  }); */
+    console.log(req.user);
+    console.log(req.account);
+    User.findOne({'googleId': req.user.id}, function(err, user) {
+      if (err){
+        return handleError(err, res);
+      }
+
+      if(!user) {
+        var newUser = new User();
+        newUser.googleId = req.user.id;
+        newUser.displayName = req.user.displayName;
+        //newUser.googleProfile = req.user;
+        newUser.save(function(err, user){
+          if (err)
+            console.log(err);
+        });
+      }
+        res.redirect('/');
+    });
+  });
 
 app.get('/logout', function(req, res){
+  console.log("logout successful");
   req.logout();
   res.redirect('/');
 });
