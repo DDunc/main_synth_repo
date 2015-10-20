@@ -1,6 +1,7 @@
 // requires instrumentModule import first!!!
 
 var ctx = ctx || new AudioContext();
+var scale = generateScale(440); 
 
 var Instrument = function() {
   this.el = document.getElementById('instrument');
@@ -8,16 +9,16 @@ var Instrument = function() {
   this.depressed_keys = {}; // holds key name and time start
   this.keys = [];
   for (var i = 0, step = 440; i < this.key_elements.length ; i++) {
-    this.keys[i] = new Key(ctx, this.key_elements[i], 'A4', step + (120*i), soundConfig);  
+    this.keys[i] = new Key(ctx, this.key_elements[i], 'A4', new Generator(ctx,scale[i]));  
   }
 };
 
-var Key = function(ctx, el, note, frequency, generator) {
+var Key = function(ctx, el, note, generator) {
 
   this.el = el;
   this.note = note;
 
-  this.soundConfig(ctx, frequency);
+  this.generator = generator; 
   this.manualTrigger = function(timeInterval) {
     var f = setTimeOut(function(){
       this.gainNode.gain.value = 1;

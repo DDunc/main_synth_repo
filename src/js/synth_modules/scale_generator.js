@@ -30,11 +30,10 @@ var generateScale = function(frequency, name){
   }
 
   scale.name = name;
-  return scale;
+  var start = scale.indexOf(440);
+  var end = scale.indexOf(880);
+  return scale.slice(start,end + 1);
 };
 
 var s = generateScale(440,'A');
 console.log(s);
-var start = s.indexOf(440);
-var end = s.indexOf(880);
-//console.log(s.slice(start,end + 1));

@@ -2,7 +2,6 @@
 // for each key, a new generator is created with a frequency that is generated
 // by the frequency generator
 
-var ctx = ctx || new AudioContext();
 
 var Generator = function(ctx, frequency) {
   this.name = 'default';
