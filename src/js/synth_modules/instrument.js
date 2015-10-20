@@ -50,20 +50,12 @@ var Sequencer = function() {
   this.pads = [];
 
   // event listeners, delegation
-  // when we touch a pad 
+  // when we touch a pad first time, write mode  on
+  // when we touch a pad 2nd time, writemode off
   this.el.addEventListener('touchstart', function(e) {
     if (e.target.className === 'pad') {
-      this.writeMode = true;
+      this.writeMode = !this.writeMode;
       console.log('pad write mode is ', (this.writeMode) ? 'on' : 'off');
-      console.log(e.target.innerHTML);
-    }
-  }.bind(this));
-  // when we let go of a pad 
-  this.el.addEventListener('touchend', function(e) {
-    if (e.target.className === 'pad') {
-      this.writeMode = false;
-      console.log('pad write mode is ', (this.writeMode) ? 'on' : 'off');
-      console.log(e.target.innerHTML);
     }
   }.bind(this));
 
