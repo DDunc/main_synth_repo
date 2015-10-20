@@ -14,7 +14,7 @@ var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
-var usersRouter = require(__dirname + '/backend/routes/users_routes');
+//var usersRouter = require(__dirname + '/backend/routes/users_routes');
 
 
 // API Access link for creating client ID and secret:
@@ -75,7 +75,7 @@ var app = express();
   app.use(express.static(__dirname + '/build'));
   //app.use(express.static(__dirname + '/src/html/login.html'));
 
-app.use('/api', usersRouter);
+//app.use('/api', usersRouter);
 
 
 
@@ -142,10 +142,7 @@ app.listen(port, function(){
 });
 
 // Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed.  Otherwise, the user will be redirected to the
-//   login page.
+//  Use this function as middleware on any resource that needs to be protected.
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/');
