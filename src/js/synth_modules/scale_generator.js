@@ -1,4 +1,4 @@
-var generator = function(frequency, name){
+var generateScale = function(frequency, name){
 
   var min, max;
   var scale = [];
@@ -19,16 +19,22 @@ var generator = function(frequency, name){
     note_range = min / 12;
 
     while (_min < min * 2) {
-      scale.push(_min);
+
+      // fix next if check ... ugh
+      if (min*2 - _min > 1) {
+        scale.push(_min);
+      }
       _min += note_range;
     }
     min *= 2;
   }
 
-  console.log(min,max);
   scale.name = name;
   return scale;
 };
 
-var s = generator(440,'A');
-console.dir(s);
+var s = generateScale(440,'A');
+console.log(s);
+var start = s.indexOf(440);
+var end = s.indexOf(880);
+//console.log(s.slice(start,end + 1));
