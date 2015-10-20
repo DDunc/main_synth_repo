@@ -11,13 +11,13 @@ var Generator = function(ctx, frequency) {
   this.osc.connect(this.gainNode);
   this.gainNode.connect(ctx.destination);
   this.gainNode.gain.value = 0;
-};
-
-Generator.prototype.start = function() {
   this.osc.start(0);
 };
 
-Generator.prototype.play = function() {
-  this.start();
+Generator.prototype.start = function() {
   this.gainNode.gain.value = 1;
+};
+
+Generator.prototype.stop = function() {
+  this.gainNode.gain.value = 0;
 };
