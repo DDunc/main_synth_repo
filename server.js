@@ -15,7 +15,9 @@ var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 
+var usersRouter = require(__dirname + '/routes/users_routes');
 
+app.use('/api', usersRouter);
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
@@ -37,7 +39,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:" + port + "/auth/google/return"
+    callbackURL: "http://localhost:" + port + "/api/auth/google/return"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, will need to be refactored
@@ -46,27 +48,10 @@ passport.use(new GoogleStrategy({
     //the db
     process.nextTick(function () {
       console.log(profile);
-     User.findOne({'googleId': profile.id}, function(err, user) {
-      if (err){
-        return handleError(err, res);
-      }
-
-      if(!user) {
-        var newUser = new User();
-        newUser.googleId = profile.id;
-        newUser.displayName = profile.displayName;
-        newUser.googleProfile = profile;
-        newUser.save(function(err, user){
-          if (err)
-            console.log(err);
-        });
-      }
       //second argument gets added to req.user
       return done(null, profile);
-    });
   }
-  )};
-));
+  )}));
 
 var app = express();
 
@@ -102,12 +87,12 @@ app.get('/login', function(req, res){
 //   request.  The first step in Google authentication will involve
 //   redirecting the user to google.com.  After authorization, Google
 //   will redirect the user back to this application at /auth/google/callback
-app.get('/auth/google',
+/* app.get('/auth/google',
   passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }),
   function(req, res){
     // The request will be redirected to Google for authentication, so this
     // function will not be called.
-  });
+  }); */
 
 // GET /auth/google/callback
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -115,11 +100,11 @@ app.get('/auth/google',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this case, will redirect the user to the home page but display
 //   the google profile object.
-app.get('/auth/google/return',
+/*app.get('/auth/google/return',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
-  });
+  }); */
 
 app.get('/logout', function(req, res){
   req.logout();
