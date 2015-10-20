@@ -12,12 +12,9 @@
   color: whitesmoke;
 }
 #sequencer,
-#synth {
-  display: block;
-}
-
+#synth
+{display: block;}
 button {
-  display: block;
   height: 40px;
   width: 70px;
   margin-bottom: 20px;

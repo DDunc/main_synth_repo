@@ -10,13 +10,20 @@ var soundConfig = function(ctx, frequency) {
   this.gainNode.gain.value = 0;
 };
 
-var Key = function(ctx, note, frequency, soundConfig, el) {
+var Key = function(ctx, el, note, frequency, soundConfig) {
 
   this.el = el;
   this.note = note;
 
   this.soundConfig = soundConfig;
   this.soundConfig(ctx, frequency);
+  this.manualTrigger = function(timeInterval) {
+    var f = setTimeOut(function(){
+      this.gainNode.gain.value = 1;
+    }.bind(this),timeInterval);
+    f.clearTimeout();
+
+  };
 
   this.el.addEventListener('touchstart', function(){
     this.gainNode.gain.value = 1;
@@ -34,7 +41,7 @@ var Synth = function(ctx) {
   this.depressed_keys = {};
   this.keys = [];
   for (var i = 0, step = 440; i < this.key_elements.length ; i++) {
-    this.keys[i] = new Key(ctx, 'A4', step + (120*i), soundConfig, this.key_elements[i]);  
+    this.keys[i] = new Key(ctx, this.key_elements[i], 'A4', step + (120*i), soundConfig);  
   }
 };
 
