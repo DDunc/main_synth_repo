@@ -3,21 +3,26 @@
 var ctx = ctx || new AudioContext();
 var scale = generateScale(440); 
 
-var Instrument = function() {
+var Instrument = function(Sequencer) {
+
   this.el = document.getElementById('instrument');
-  this.key_elements = this.el.querySelectorAll('div');
-  this.depressed_keys = {}; // holds key name and time start
   this.keys = [];
-  for (var i = 0, step = 440; i < this.key_elements.length ; i++) {
-    this.keys[i] = new Key(ctx, this.key_elements[i], 'A4', new Generator(ctx,scale[i]));  
+  this.key_elements = this.el.querySelectorAll('div');
+  this.depressed_keys = {'A4':true}; // holds key name frequency and time start
+
+  for (var i = 0; i < this.key_elements.length ; i++) {
+    this.keys[i] = new Key(ctx, this.key_elements[i], 'A4', new Generator(ctx,scale[i]), this.depressed_keys);  
   }
+  this.sequencer = new Sequencer(this.depressed_keys);
+
 };
 
-var Key = function(ctx, el, note, generator) {
+var Key = function(ctx, el, note, generator, depressed_keys) {
 
   this.el = el;
   this.note = note;
 
+  this.depressed_keys = depressed_keys;
   this.generator = generator; 
   this.manualTrigger = function(timeInterval) {
     var f = setTimeOut(function(){
@@ -28,6 +33,8 @@ var Key = function(ctx, el, note, generator) {
   };
 
   this.el.addEventListener('touchstart', function(){
+    // PICK UP HERE
+    this.depressed_keys['A4'] = generator.noteName;
     this.generator.start();
   }.bind(this));
 
@@ -37,31 +44,45 @@ var Key = function(ctx, el, note, generator) {
    
 };
 
-var Sequencer = function() {
+var Sequencer = function(depressed_keys) {
 
   // cache dom
   this.el = document.getElementById('sequencer');
   this.stopButton = document.getElementById('stop');
   this.playButton = document.getElementById('play');
   this.pad_elements = this.el.querySelectorAll('div');
-  this.writeMode = false;
+  this.depressed_keys = depressed_keys;
 
   // sequencer model 
   this.pads = [];
+  
+  // keeping tabs on sequencer pads to know when to write
+  this.checkPads = function() {
+    var active_pads = this.pads.filter(function(pad){
+      return pad.writeMode;
+    });
+    console.log('there are %d pads in writeMode', active_pads.length);
+  };
+
 
   // event listeners, delegation
-  // when we touch a pad first time, write mode  on
-  // when we touch a pad 2nd time, writemode off
-  this.el.addEventListener('touchstart', function(e) {
+  
+  var toggleWriteMode = function(e) {
+    // when we touch a pad, write mode is set on that pad only
+    // a synth sound is written to all active pads
     if (e.target.className === 'pad') {
-      this.writeMode = !this.writeMode;
-      console.log('pad write mode is ', (this.writeMode) ? 'on' : 'off');
+      var padIndex = e.target.innerHTML;
+      this.pads[padIndex].writeMode = !this.pads[padIndex].writeMode; 
+      console.log('pad %s write mode is %s ', padIndex, (this.pads[padIndex].writeMode) ? 'on' : 'off');
     }
-  }.bind(this));
+  };
 
+
+  this.el.addEventListener('touchstart', toggleWriteMode.bind(this));
   // each pad is an array of sounds
   for (var i = 0; i < this.pad_elements.length ; i++) {
     this.pads[i] = {
+      writeMode: false,
       el:     this.pad_elements[i],
       notes:  [],
     };  
@@ -82,7 +103,7 @@ var Sequencer = function() {
 
 Sequencer.prototype.writeNote = function() {
   // when we write a note, we copy the instrument value metadata to the array
-  this.pads.push(this.instrument.depressed_keys);
+  this.synth.depressed_keys;
 };
 
 Sequencer.prototype.stop = function() {
@@ -105,6 +126,4 @@ Sequencer.prototype.play = function() {
 };
 
 
-
-var sequencer = new Sequencer();
-var instrument = new Instrument(ctx, sequencer);
+var instrument = new Instrument(Sequencer);

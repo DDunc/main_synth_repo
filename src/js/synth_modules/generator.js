@@ -4,6 +4,7 @@
 
 var Generator = function(ctx, frequency) {
   this.name = 'default';
+  this.noteName = 'A0';
   this.osc = ctx.createOscillator();
   this.osc.frequency.value = frequency;
   this.gainNode = ctx.createGain();
