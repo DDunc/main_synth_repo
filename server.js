@@ -14,6 +14,7 @@ var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
+var Preset = require(__dirname + "/models/preset");
 var FacebookStrategy = require("passport-facebook");
 //var presetRouter = require(__dirname + '/backend/routes/users_routes');
 
@@ -151,19 +152,32 @@ function findOrCreateUser(req, res, stratId) {
       return handleError(err, res);
     }
     if(user){
-      req.dbId = user._id;
-      res.redirect("/#user/" + user._id);
+      req.dbId = user._id.toString();
+      console.log(req.dbId);
+      res.redirect("/");
     }
     if(!user) {
       var newUser = new User();
+      req.dbId = newUser._id.toString();
+      console.log("this is new user id " + newUser._id);
       newUser[stratId] = req.user.id;
       newUser.displayName = req.user.displayName;
+      console.log(req.dbId);
+      var newPreset = new Preset();
+      newPreset.ownerId = req.dbId;
+      newPreset.presetName = req.user.id + " space bass";
+      newPreset.isPublic = true;
       //newUser.googleProfile = req.user;
       newUser.save(function(err, user){
         if (err){
           console.log(err);
         }
-        res.redirect("/#user/" + user._id);
+        newPreset.save(function(err, preset){
+          if (err){
+            console.log(err);
+          }
+          res.redirect("/");
+        })
       })
     };
   })
