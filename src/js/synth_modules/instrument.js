@@ -14,13 +14,6 @@ var Key = function(el, soundSource, sharedState) {
     self.soundSource.start();
     console.log(self.soundSource.gainNode.gain.value);
 
-    var idParts = e.target.id.split('-');
-    if (idParts[0] !== 'pad' || !idParts[1]) return false; 
-
-    var id = idParts[1]; 
-
-
-    // 
     var key = {};
     self.sharedState.keys[self.noteName] = key;
     key.active = true;
@@ -35,11 +28,6 @@ var Key = function(el, soundSource, sharedState) {
   self.el.addEventListener('touchend', function(e){
     self.soundSource.stop();
     console.log('gain: ', self.soundSource.gainNode.gain.value);
-
-    var idParts = e.target.id.split('-');
-    if (idParts[0] !== 'pad' || !idParts[1]) return false; 
-
-    var id = idParts[1]; 
 
     // when the keyboard key is released, push remaining data to sharedState object
     var key = self.sharedState.keys[self.noteName] = {};
@@ -109,7 +97,7 @@ var Sequencer = function(sharedState) {
         
       }
       this.pads[padId].writeMode = !this.pads[padId].writeMode;
-      console.log(this.pads[padId].writeMode);
+      console.log("write mode is %s", (this.pads[padId].writeMode) ? 'on.' : 'off.');
     }
   }.bind(this);
 
