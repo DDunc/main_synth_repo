@@ -6,15 +6,11 @@ var Key = function(el, soundSource, sharedState) {
   this.soundSource = soundSource; 
   this.noteName = this.soundSource.noteName;
 
-};
-
-Key.prototype.bindKeyTouchStart = function() {
-  
-  // run this on instrument.keys
-  // attach event handler to each key
   
   var self = this; // sorry [:
-  this.el.addEventListener('touchstart', function(e){
+  self.el.addEventListener('touchstart', function(e){
+    self.soundSource.start();
+    console.log(self.soundSource.gainNode.gain.value);
 
     var idParts = e.target.id.split('-');
     if (idParts[0] !== 'pad' || !idParts[1]) return false; 
@@ -30,17 +26,13 @@ Key.prototype.bindKeyTouchStart = function() {
     key.duration = null;
 
     // and start the sound (increase gain from 0 to 1)
-    self.soundSource.start();
 
   });
 
-};
-
-Key.prototype.bindKeyTouchEnd = function() {
-
-  var self = this;
-
   self.el.addEventListener('touchend', function(e){
+    self.soundSource.stop();
+    console.log(self.soundSource.gainNode.gain.value);
+    console.log('hi');
 
     var idParts = e.target.id.split('-');
     if (idParts[0] !== 'pad' || !idParts[1]) return false; 
@@ -56,7 +48,7 @@ Key.prototype.bindKeyTouchEnd = function() {
     // and stop the sound
     self.soundSource.stop();
 
-  }.bind(this));
+  });
 };
 
 
@@ -144,9 +136,4 @@ var sharedState = {
 };
 
 var instrument = new Instrument(sharedState, ctx);
-for (var i = 0; i < instrument.keys; i++) {
-//  instrument.keys[i].bindKeyTouchStart();
- // instrument.keys[i].bindKeyTouchEnd();
-}
-
 var sequencer = new Sequencer(sharedState);
