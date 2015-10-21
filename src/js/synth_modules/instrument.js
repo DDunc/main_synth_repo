@@ -7,7 +7,9 @@ var Key = function(el, soundSource, sharedState) {
   this.noteName = this.soundSource.noteName;
 
   
+  // add event handlers
   var self = this; // sorry [:
+
   self.el.addEventListener('touchstart', function(e){
     self.soundSource.start();
     console.log(self.soundSource.gainNode.gain.value);
@@ -18,8 +20,9 @@ var Key = function(el, soundSource, sharedState) {
     var id = idParts[1]; 
 
 
-    // create entry in shared object's keyboard 'keys' dictionary under notename
-    var key = self.sharedState.keys[self.noteName] = {};
+    // 
+    var key = {};
+    self.sharedState.keys[self.noteName] = key;
     key.active = true;
     key.startTime = new Date().getTime();
     key.endTime = null;
@@ -31,8 +34,7 @@ var Key = function(el, soundSource, sharedState) {
 
   self.el.addEventListener('touchend', function(e){
     self.soundSource.stop();
-    console.log(self.soundSource.gainNode.gain.value);
-    console.log('hi');
+    console.log('gain: ', self.soundSource.gainNode.gain.value);
 
     var idParts = e.target.id.split('-');
     if (idParts[0] !== 'pad' || !idParts[1]) return false; 
@@ -90,7 +92,7 @@ var Sequencer = function(sharedState) {
   sharedState.pads = this.pads;
 
   // event Handlers
-  var toggleWrite = function(e) {
+  this.toggleWrite = function(e) {
     var padId;
     if (e.target.className.split(' ')[0] === 'pad') {
       padId = e.target.id.split('-')[1];
@@ -111,7 +113,7 @@ var Sequencer = function(sharedState) {
     }
   }.bind(this);
 
-  this.el.addEventListener('touchstart', toggleWrite);
+  this.el.addEventListener('touchstart', this.toggleWrite);
 
 };
 
@@ -130,7 +132,7 @@ var scale = generateScale(440);
 
 var sharedState = {
 
-  keys: [], // keys currently held down
+  keys: {}, // keys currently held down
   pads: [], // pads in write mode
 
 };
