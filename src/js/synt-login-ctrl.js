@@ -1,6 +1,6 @@
 require("./synth-app.js");
 
-angular.module("synthy").controller('loginController', ['$scope', '$http', function($scope, $http) {
+angular.module("synthy").controller('loginCtrl', ['$scope', '$http', function($scope, $http) {
   
   $scope.signIn = function(){
     $http.get("api/auth/google")
