@@ -2,7 +2,7 @@ var util = require('util');
 var http = require('http');
 var express = require('express');
 var passport = require('passport');
-var  GoogleStrategy = require('passport-google-oauth2').Strategy;
+var GoogleStrategy = require('passport-google-oauth2').Strategy;
 //requiring in what was in express 3 natively
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var FacebookStrategy = require("passport-facebook");
 //var presetRouter = require(__dirname + '/backend/routes/users_routes');
+
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
@@ -34,7 +35,7 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
-//
+//FB strategy, verify function
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
@@ -52,8 +53,6 @@ passport.use(new FacebookStrategy({
 ));
 
 // Use the GoogleStrategy within Passport
-//   Strategies in Passport require a `verify` function, which accept
-//   credentials and invoke a callback with a user object.
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
@@ -79,43 +78,36 @@ var app = express();
 }); */
 
 // configure Express
-  //app.use('/api', presetRouter);
-  app.use(logger('dev'));
-  app.use(cookieParser());
-  app.use(bodyParser.json());
-  app.use(methodOverride());
-  app.use(session({
-    secret: 'helloNSA',
-    resave: true,
-    saveUninitialized: true
-    })
-  );
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(express.static(__dirname + '/build'));
+app.use(logger('dev'));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(methodOverride());
+app.use(session({
+  secret: 'helloNSA',
+  resave: true,
+  saveUninitialized: true
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(__dirname + '/build'));
 
 
 
-  app.get('/auth/facebook',
-  passport.authenticate('facebook'),
-  function(req, res){
-    // The request will be redirected to Facebook for authentication, so
-    // this function will not be called.
-  });
+app.get('/auth/facebook', passport.authenticate('facebook'),function(req, res){
+  // The request will be redirected to Facebook for authentication, so
+  // this function will not be called.
+});
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    process.nextTick(function() {
-      findOrCreateUser(req, res, "facebookId")
-    })
-  });
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/' }),
+function(req, res) {
+  process.nextTick(function() {
+    findOrCreateUser(req, res, "facebookId")
+  })
+});
+
   //app.use(express.static(__dirname + '/src/html/login.html'));
-
 //app.use('/api', usersRouter);
-
-
-
 /* app.get('/', function(req, res){
   res.send({ user: req.user }); //with no user, sends empty object;
 }); */
