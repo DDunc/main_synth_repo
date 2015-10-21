@@ -1,9 +1,11 @@
-
 // for each key, a new generator is created with a frequency that is generated
-// by the frequency generator
+// by the equally tempered scale generator
+
+// the oscillator starts when the sound is created, but the gain is initially 0
 
 var Generator = function(ctx, frequency) {
-  this.name = 'default';
+  this.patchName = 'spaceBass';
+  this.noteName = 'A0';
   this.osc = ctx.createOscillator();
   this.osc.frequency.value = frequency;
   this.gainNode = ctx.createGain();
@@ -21,6 +23,32 @@ Generator.prototype.stop = function() {
   this.gainNode.gain.value = 0;
 };
 
-Generator.prototype.getTone = function() {
+Generator.prototype.playFor = function(duration) {
+  this.start();
+  setTimeout(function(){
+      this.stop();
+  }.bind(this), duration);
 
 };
+
+
+Generator.prototype.export = function() {
+  return JSON.stringify({
+    username: 'al_420_jesusBlunt',
+    patchName : this.patchName, 
+    freqRange: {
+        min: 440,
+        max: 880
+    },
+    src: 'oscillator',
+    processing: ['gain'], 
+
+  });
+};
+
+
+/*
+ * 
+ *
+ *
+ */
