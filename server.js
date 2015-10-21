@@ -181,6 +181,7 @@ function findOrCreateUser(req, res, stratId) {
 app.get('/logout', function(req, res){
   console.log("logout successful");
   req.logout();
+  console.log(req.user);
   res.redirect('/');
 });
 
