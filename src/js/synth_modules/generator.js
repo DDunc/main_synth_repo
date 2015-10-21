@@ -24,12 +24,8 @@ Generator.prototype.stop = function() {
   this.gainNode.gain.value = 0;
 };
 
-Generator.prototype.getTone = function() {
-
-};
-
 Generator.prototype.export = function() {
-  return {
+  return JSON.stringify({
     username: 'al_420_jesusBlunt',
     patchName : this.patchName, 
     freqRange: {
@@ -39,7 +35,7 @@ Generator.prototype.export = function() {
     src: 'oscillator',
     processing: ['gain'], 
 
-  };
+  });
 };
 
 
