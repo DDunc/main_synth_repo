@@ -6,38 +6,41 @@ var Key = function(el, soundSource, sharedState) {
   this.soundSource = soundSource; 
   this.noteName = this.soundSource.noteName;
 
-  
   // add event handlers
-  var self = this; // sorry [:
+  var self = this; 
 
+  // touch starts, set note to active, and calc start time
   self.el.addEventListener('touchstart', function(e){
+
+    // start the sound (increase gain from 0 to 1)
     self.soundSource.start();
-    console.log(self.soundSource.gainNode.gain.value);
-
-    var key = {};
-    self.sharedState.keys[self.noteName] = key;
-    key.active = true;
-    key.startTime = new Date().getTime();
-    key.endTime = null;
-    key.duration = null;
-
-    // and start the sound (increase gain from 0 to 1)
+    console.log('gain: ', self.soundSource.gainNode.gain.value);
+    self.sharedState.keys[self.noteName] = {};
+    self.sharedState.keys[self.noteName].active = true;
+    self.sharedState.keys[self.noteName].startTime = new Date().getTime();
+    self.sharedState.keys[self.noteName].endTime = null;
+    self.sharedState.keys[self.noteName].duration = null;
 
   });
 
   self.el.addEventListener('touchend', function(e){
+
+    // turn sound off 
     self.soundSource.stop();
     console.log('gain: ', self.soundSource.gainNode.gain.value);
 
     // when the keyboard key is released, push remaining data to sharedState object
-    var key = self.sharedState.keys[self.noteName] = {};
-    key.active = false;
-    key.endTime = new Date().getTime();
-    key.duration = key.endTime - key.startTime;
+    // get e.target.id and map to model index.
+    self.sharedState.keys[self.noteName].active = false;
+    self.sharedState.keys[self.noteName].endTime = new Date().getTime();
+    self.sharedState.keys[self.noteName].duration = 
+      self.sharedState.keys[self.noteName].endTime - 
+      self.sharedState.keys[self.noteName].startTime;
 
     // and stop the sound
     self.soundSource.stop();
 
+    console.log(self.sharedState.keys[self.noteName]);
   });
 };
 
@@ -65,6 +68,8 @@ var Instrument = function(sharedState, ctx) {
 
 var Sequencer = function(sharedState) {
 
+  this.sharedState = sharedState; 
+
   // cache dom
   this.el = document.getElementById('sequencer');
   this.stopButton = document.getElementById('stop');
@@ -74,40 +79,43 @@ var Sequencer = function(sharedState) {
   // model initialization
   this.pads = [];
   for (var i = 0; i < this.pad_elements.length; i++) {
-    var padId = this.pad_elements[i].id.split('-')[1];
-    this.pads[i] = new Pad(sharedState, padId);
+    // this new pad should have a ref to a dom element
+    this.pads.push(new Pad(this.sharedState, this.pad_elements[i]));
   }
-  sharedState.pads = this.pads;
+  this.sharedState.pads = this.pads;
 
   // event Handlers
+  var self = this;
   this.toggleWrite = function(e) {
+
     var padId;
     if (e.target.className.split(' ')[0] === 'pad') {
       padId = e.target.id.split('-')[1];
 
       // if pad write mode is on, but going to off
-      if (this.pads[padId].writeMode) {
+      if (self.pads[padId].writeMode) {
 
         // push active keys
-        sharedState.keys.forEach(function(key){
-          if (key.active) this.pads[padId].sounds.push('abc');
-        }.bind(this));
+        self.sharedState.keys.forEach(function(key){
+          if (key.active) self.pads[padId].sounds.push('abc');
+        }.bind(self));
         // wipe old keys
        // sharedState.keys = [];
         
       }
-      this.pads[padId].writeMode = !this.pads[padId].writeMode;
-      console.log("write mode is %s", (this.pads[padId].writeMode) ? 'on.' : 'off.');
+      self.pads[padId].writeMode = !self.pads[padId].writeMode;
+      console.log("write mode for pad # %s is %s", padId, (self.pads[padId].writeMode) ? 'on.' : 'off.');
     }
-  }.bind(this);
+  };
 
-  this.el.addEventListener('touchstart', this.toggleWrite);
+  self.el.addEventListener('touchstart', self.toggleWrite);
 
 };
 
-var Pad = function(sharedState,id) {
+var Pad = function(sharedState, el) {
+  this.el = el;
+  this.sharedState = sharedState;
   this.sounds = [];
-  this.id = id;
   this.writeMode = false;
 };
 
