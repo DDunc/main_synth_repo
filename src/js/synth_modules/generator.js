@@ -1,6 +1,8 @@
 
 // for each key, a new generator is created with a frequency that is generated
-// by the frequency generator
+// by the equally tempered scale generator
+
+// the oscillator starts when the sound is created, but the gain is initially 0
 
 var Generator = function(ctx, frequency) {
   this.patchName = 'spaceBass';
