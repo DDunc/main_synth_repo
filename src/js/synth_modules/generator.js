@@ -1,4 +1,3 @@
-
 // for each key, a new generator is created with a frequency that is generated
 // by the equally tempered scale generator
 
@@ -23,6 +22,15 @@ Generator.prototype.start = function() {
 Generator.prototype.stop = function() {
   this.gainNode.gain.value = 0;
 };
+
+Generator.prototype.playFor = function(duration) {
+  this.start();
+  setTimeout(function(){
+      this.stop();
+  }.bind(this), duration);
+
+};
+
 
 Generator.prototype.export = function() {
   return JSON.stringify({

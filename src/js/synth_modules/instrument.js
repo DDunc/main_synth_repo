@@ -39,7 +39,6 @@ var Key = function(el, soundSource) {
       keyId = e.target.id.split('-')[1];
     }
 
-      console.log(keyId);
     // when the keyboard key is released, push remaining data to sharedState object
     // get e.target.id and map to model index.
     window.sharedState.keys[keyId].active = false;
@@ -93,21 +92,23 @@ var Sequencer = function() {
   }
 
 
+  // play function on start click
   var self = this;
   self.playButton.addEventListener('touchstart', function(e) {
     var i = 0;
     self.play_handler = setInterval(function() {
       console.log('beat %s', i);
       if (window.sharedState.pads[i].sounds.length) {
-        window.sharedState.pads[i].sounds[0].soundSource.start();
+        console.log(window.sharedState.pads[i].sounds[0].soundSource);
+        // loop through sounds and start them all
       }
       i = (i + 1)%8;
     }.bind(self), 500);
   });
 
+  // stop function on stop button click/touch
   this.stopButton.addEventListener('touchstart', function(e) {
     clearInterval(self.play_handler);
-
   });
 };
 
