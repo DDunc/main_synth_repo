@@ -1,6 +1,23 @@
 <!doctype html>
 <html lang="en" ng-app="synthy">
 	<head>
+	<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '540551289430207',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
 		<meta charset="UTF-8">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		<meta name="viewport" content="width=device-width, user-scalable=no">
@@ -22,6 +39,8 @@
 		<!-- FOOTER  -->
 		<footer>
 			<ul>
+				<li><a href="/auth/google">LOGIN WITH GOOGLE</a></li>
+					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
 				<li><a href="#">TERMS OF USE</a></li>
 				<li><a href="#">PRIVACY POLICY</a></li>
 				<li><a href="#">CONTACT</a></li>
