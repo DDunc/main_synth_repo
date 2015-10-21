@@ -31,7 +31,7 @@ module.exports = {
     livereload: true,
     directoryListing: false,
     open: false,
-    port: 9000
+    port: 3000
   },
   production: {
     cssSrc: dest + '/css/*.css',
