@@ -30,7 +30,7 @@ node_modules
 build
 .DS_store
 #local environmental variables
-.env
+.env.txt
 Procfile
 
 #database folder
