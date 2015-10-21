@@ -61,17 +61,19 @@ var Sequencer = function(state) {
 
   // event Handlers
   var toggleWrite = function(e) {
+    var padId;
     if (e.target.className.split(' ')[0] === 'pad') {
-      var padId = e.target.id.split('-')[1];
-      this.pads[padIndex].writeMode = !this.pads[padIndex].writeMode;
+      padId = e.target.id.split('-')[1];
+      this.pads[padId].writeMode = this.pads[padId].writeMode ? false : true;
+      console.log(this.pads[padId].writeMode);
     }
-  };
+  }.bind(this);
+
   var getPlayedNotes = function() {
 
   };
 
   this.el.addEventListener('touchstart', toggleWrite);
-  this.el.addEventListener('touchend', getPlayedNotes);
 
 };
 
