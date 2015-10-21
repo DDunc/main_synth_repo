@@ -1,10 +1,9 @@
-var Key = function(el, soundSource, sharedState) {
+var Key = function(el, soundSource) {
 
   // Web Audio Context, the Dom El and the soundSource 
   this.el = el;
-  this.sharedState = sharedState;
   this.soundSource = soundSource; 
-  this.noteName = this.soundSource.noteName;
+  this.noteName = soundSource.noteName;
 
   // add event handlers
   var self = this; 
@@ -15,11 +14,11 @@ var Key = function(el, soundSource, sharedState) {
     // start the sound (increase gain from 0 to 1)
     self.soundSource.start();
     console.log('gain: ', self.soundSource.gainNode.gain.value);
-    self.sharedState.keys[self.noteName] = {};
-    self.sharedState.keys[self.noteName].active = true;
-    self.sharedState.keys[self.noteName].startTime = new Date().getTime();
-    self.sharedState.keys[self.noteName].endTime = null;
-    self.sharedState.keys[self.noteName].duration = null;
+    // append new values to object
+    window.sharedState.keys[self.noteName].active = true;
+    window.sharedState.keys[self.noteName].startTime = new Date().getTime();
+    window.sharedState.keys[self.noteName].endTime = null;
+    window.sharedState.keys[self.noteName].duration = null;
 
   });
 
@@ -31,21 +30,20 @@ var Key = function(el, soundSource, sharedState) {
 
     // when the keyboard key is released, push remaining data to sharedState object
     // get e.target.id and map to model index.
-    self.sharedState.keys[self.noteName].active = false;
-    self.sharedState.keys[self.noteName].endTime = new Date().getTime();
-    self.sharedState.keys[self.noteName].duration = 
-      self.sharedState.keys[self.noteName].endTime - 
-      self.sharedState.keys[self.noteName].startTime;
+    window.sharedState.keys[self.noteName].active = false;
+    window.sharedState.keys[self.noteName].endTime = new Date().getTime();
+    window.sharedState.keys[self.noteName].duration = 
+      window.sharedState.keys[self.noteName].endTime - 
+      window.sharedState.keys[self.noteName].startTime;
+    console.log(window.sharedState.keys[self.noteName]);
 
     // and stop the sound
     self.soundSource.stop();
 
-    console.log(self.sharedState.keys[self.noteName]);
   });
 };
 
-
-var Instrument = function(sharedState, ctx) {
+var Instrument = function(ctx) {
 
   // some Dom els
   // a keys model container 
@@ -56,19 +54,18 @@ var Instrument = function(sharedState, ctx) {
 
   // model for Instrument - an array of key objects
   this.keys = [];
+  var soundSource;
   for (var i=0; i<this.keyElements.length; i++) {
-    this.keys[i] = new Key(this.keyElements[i], new Generator(ctx,scale[i]),sharedState);
+    soundSource = new Generator(ctx,scale[i]); 
+    this.keys[soundSource.noteName] = new Key(this.keyElements[i], soundSource, window.sharedState);
   }
-
-  // put keys on shared state
-  sharedState.keys = this.keys;
+  // bind soundSource to shared state on window
+  window.sharedState.keys = this.keys;
 
 };
 
 
-var Sequencer = function(sharedState) {
-
-  this.sharedState = sharedState; 
+var Sequencer = function() {
 
   // cache dom
   this.el = document.getElementById('sequencer');
@@ -80,9 +77,8 @@ var Sequencer = function(sharedState) {
   this.pads = [];
   for (var i = 0; i < this.pad_elements.length; i++) {
     // this new pad should have a ref to a dom element
-    this.pads.push(new Pad(this.sharedState, this.pad_elements[i]));
+    this.pads.push(new Pad(window.sharedState, this.pad_elements[i]));
   }
-  this.sharedState.pads = this.pads;
 
   // event Handlers
   var self = this;
@@ -96,7 +92,8 @@ var Sequencer = function(sharedState) {
       if (self.pads[padId].writeMode) {
 
         // push active keys
-        self.sharedState.keys.forEach(function(key){
+        window.sharedState.keys.forEach(function(key){
+          //console.log(key);
           if (key.active) self.pads[padId].sounds.push('abc');
         }.bind(self));
         // wipe old keys
@@ -126,12 +123,12 @@ var Pad = function(sharedState, el) {
 var ctx = ctx || new AudioContext();
 var scale = generateScale(440); 
 
-var sharedState = {
+window.sharedState = {
 
-  keys: {}, // keys currently held down
+  keys: [], // keys currently held down
   pads: [], // pads in write mode
 
 };
 
-var instrument = new Instrument(sharedState, ctx);
-var sequencer = new Sequencer(sharedState);
+var instrument = new Instrument(ctx);
+var sequencer = new Sequencer();

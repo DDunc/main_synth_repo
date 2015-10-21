@@ -15,6 +15,10 @@ var route = require('angular-route');
 			controller: "SynthCtrl",
 		})
 
+			.when("/login", {
+				templateUrl: "html/login.html",
+				controller: "loginController"
+			})
 		////////////////////////
 			.otherwise({
 			redirectTo: "/synth",
