@@ -1,5 +1,4 @@
 //ownerId is the user object _id, do a db.collection.find({ownerId: 'User._id'})
-//
 var mongoose = require("mongoose");
 //search by owner (ownerId) serach by preset name(presetName), return public only
 //To Do: filter out illegal / *, <, etc characters with regex
