@@ -37,8 +37,13 @@ var Key = function(ctx, el, note, soundSource, state) {
   }.bind(this));
 
   this.el.addEventListener('touchend', function(){
+
     state.keys[this.soundSource.noteName].duration = new Date().getTime() - state.keys[this.soundSource.noteName].startTime;
     this.soundSource.stop();
+    state.keys.forEach(function(key){
+      key.active = false;
+    });
+    // wipe active keys
     console.log(state.keys[this.soundSource.noteName]);
   }.bind(this));
 };
@@ -64,14 +69,22 @@ var Sequencer = function(state) {
     var padId;
     if (e.target.className.split(' ')[0] === 'pad') {
       padId = e.target.id.split('-')[1];
-      this.pads[padId].writeMode = this.pads[padId].writeMode ? false : true;
+
+      // if pad write mode is on, but going to off
+      if (this.pads[padId].writeMode) {
+
+        // push active keys
+        state.keys.forEach(function(key){
+            this.pads[padId].sounds.push('abc');
+        }.bind(this));
+        // wipe old keys
+       // state.keys = [];
+        
+      }
+      this.pads[padId].writeMode = !this.pads[padId].writeMode;
       console.log(this.pads[padId].writeMode);
     }
   }.bind(this);
-
-  var getPlayedNotes = function() {
-
-  };
 
   this.el.addEventListener('touchstart', toggleWrite);
 
