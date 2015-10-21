@@ -1,3 +1,6 @@
+//import
+@import url(https://fonts.googleapis.com/css?family=Fjalla+One);
+
 // Breakpoint for Media Queries
 $break: 50em;
 
@@ -32,18 +35,5 @@ $font-size: (
   'mega-large': em(72),
 );
 
-
-//font family map
-$font-family: (
-  'primary': (
-    'light': 'Ubuntu-Light' sans-serif,
-    'light-italic': 'Ubuntu-Light-Italic' sans-serif,
-    'regular': 'Ubuntu-Regular' sans-serif,
-    'medium': 'Ubuntu-Medium' sans-serif,
-    'bold': 'Ubuntu-Bold' sans-serif
-  ),
-  'secondary': (
-    'light': 'RobotoSlab-Light' serif,
-    'regular': 'RobotoSlab-Regular' serif
-  ),
-);
+//fonts
+$font-primary: 'Fjalla One', sans-serif;

@@ -23,3 +23,11 @@ button {
   width: 70px;
   margin-bottom: 20px;
 }
+
+.active {
+  background: red;
+}
+
+.inactive {
+  background: rgb(140,140,140);
+}
