@@ -15,7 +15,8 @@ var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
-var presetRouter = require("backend/routes/preset_routes");
+var presetRouter = require(__dirname + "/backend/routes/preset_routes");
+var ensureAuthenticated = require(__dirname + "/backend/lib/ensureAuth");
 
 
 var FacebookStrategy = require("passport-facebook");
@@ -202,8 +203,3 @@ app.listen(port, function(){
 
 // Simple route middleware to ensure user is authenticated.
 //  Use this function as middleware on any resource that needs to be protected.
-function ensureAuthenticated(req, res, next) {
-  console.log(req)
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/');
-}

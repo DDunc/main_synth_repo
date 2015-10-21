@@ -1,8 +1,10 @@
+var express = require("express");
 var presetRouter = module.exports = exports = express.Router();
-var jsonParser = require("bodyParser").json;
-var Preset = require(__dirname + "../../models/preset");
-var User = require(__dirname + "../../models/user");
+var jsonParser = require("body-parser").json;
+var Preset = require(__dirname + "/../../models/preset");
+var User = require(__dirname + "/../../models/user");
 var mongoose = require("mongoose");
+var ensureAuthenticated = require(__dirname + "/../lib/ensureAuth");
 
 
 presetRouter.get("/get_preset", ensureAuthenticated, jsonParser, function(req, res){
