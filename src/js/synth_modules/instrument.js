@@ -27,34 +27,20 @@ var Key = function(ctx, el, note, soundSource, state) {
   this.el = el;
   this.note = note;
   this.soundSource = soundSource; 
-
-  this.checkPads = function() {
-    // read active pads from state
-  };
-
-
   this.el.addEventListener('touchstart', function(){
-
-    console.log('BEFORE:', state);
     state.keys[this.soundSource.noteName] = {
       id: this.el.id.split('-')[1],
       startTime: new Date().getTime(),
       duration: null,
     };
-
     this.soundSource.start();
-
   }.bind(this));
 
   this.el.addEventListener('touchend', function(){
-    state.keys[this.soundSource.noteName].duration = 
-        state.keys[this.soundSource.noteName].startTime - new Date().getTime();
-
+    state.keys[this.soundSource.noteName].duration = new Date().getTime() - state.keys[this.soundSource.noteName].startTime;
     this.soundSource.stop();
-    console.log('AFTER:', state);
-
+    console.log(state.keys[this.soundSource.noteName]);
   }.bind(this));
-   
 };
 
 var Sequencer = function(state) {
@@ -72,7 +58,6 @@ var Sequencer = function(state) {
     this.pads[i] = new Pad(state, padId);
   }
   state.pads = this.pads;
-  console.log(state.pads);
 
   // event Handlers
   var toggleWrite = function(e) {
