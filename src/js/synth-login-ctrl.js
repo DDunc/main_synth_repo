@@ -1,6 +1,6 @@
 require("./synth-app.js");
 
-angular.module("synthy").controller('loginController', ['$scope', '$http', function($scope, $http) {
+angular.module("synthy").controller('loginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
   
   $scope.signIn = function(){
     $http.get("api/auth/google")
@@ -10,7 +10,7 @@ angular.module("synthy").controller('loginController', ['$scope', '$http', funct
         
       }, function(res){
         console.log(res);
-      }); 
+      });
   };
 
 }]);

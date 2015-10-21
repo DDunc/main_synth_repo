@@ -1,4 +1,4 @@
-var angular = require('angular');
+require('angular/angular');
 var route = require('angular-route');
 
 (function() {
