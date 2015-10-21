@@ -4,6 +4,8 @@ var Key = function(el, soundSource) {
   this.el = el;
   this.soundSource = soundSource; 
   this.noteName = soundSource.noteName;
+  this.patchName = soundSource.patchName;
+  this.freq = soundSource.osc.frequency.value;
 
   // add event handlers
   var self = this; 
@@ -11,31 +13,40 @@ var Key = function(el, soundSource) {
   // touch starts, set note to active, and calc start time
   self.el.addEventListener('touchstart', function(e){
 
+    var keyId;
+    if (e.target.className === 'key') {
+      keyId = e.target.id.split('-')[1];
+    }
+
     // start the sound (increase gain from 0 to 1)
     self.soundSource.start();
     console.log('gain: ', self.soundSource.gainNode.gain.value);
     // append new values to object
-    window.sharedState.keys[self.noteName].active = true;
-    window.sharedState.keys[self.noteName].startTime = new Date().getTime();
-    window.sharedState.keys[self.noteName].endTime = null;
-    window.sharedState.keys[self.noteName].duration = null;
+    window.sharedState.keys[keyId].active = true;
+    window.sharedState.keys[keyId].startTime = new Date().getTime();
+    window.sharedState.keys[keyId].endTime = null;
+    window.sharedState.keys[keyId].duration = null;
 
   });
 
   self.el.addEventListener('touchend', function(e){
-
+    
     // turn sound off 
     self.soundSource.stop();
-    console.log('gain: ', self.soundSource.gainNode.gain.value);
 
+    var keyId;
+    if (e.target.className === 'key') {
+      keyId = e.target.id.split('-')[1];
+    }
+
+      console.log(keyId);
     // when the keyboard key is released, push remaining data to sharedState object
     // get e.target.id and map to model index.
-    window.sharedState.keys[self.noteName].active = false;
-    window.sharedState.keys[self.noteName].endTime = new Date().getTime();
-    window.sharedState.keys[self.noteName].duration = 
-      window.sharedState.keys[self.noteName].endTime - 
-      window.sharedState.keys[self.noteName].startTime;
-    console.log(window.sharedState.keys[self.noteName]);
+    window.sharedState.keys[keyId].active = false;
+    window.sharedState.keys[keyId].endTime = new Date().getTime();
+    window.sharedState.keys[keyId].duration = 
+      window.sharedState.keys[keyId].endTime - 
+      window.sharedState.keys[keyId].startTime;
 
     // and stop the sound
     self.soundSource.stop();
@@ -53,14 +64,12 @@ var Instrument = function(ctx) {
   this.keyElements = this.el.querySelectorAll('div');
 
   // model for Instrument - an array of key objects
-  this.keys = [];
+  this.keys = window.sharedState.keys;
   var soundSource;
   for (var i=0; i<this.keyElements.length; i++) {
     soundSource = new Generator(ctx,scale[i]); 
-    this.keys[soundSource.noteName] = new Key(this.keyElements[i], soundSource, window.sharedState);
+    this.keys['' + i] = new Key(this.keyElements[i], soundSource, window.sharedState);
   }
-  // bind soundSource to shared state on window
-  window.sharedState.keys = this.keys;
 
 };
 
@@ -74,46 +83,54 @@ var Sequencer = function() {
   this.pad_elements = this.el.querySelectorAll('div');
 
   // model initialization
-  this.pads = [];
-  for (var i = 0; i < this.pad_elements.length; i++) {
+  this.pads = window.sharedState.pads;
+  for (var i=0; i < this.pad_elements.length; i++) {
     // this new pad should have a ref to a dom element
-    this.pads.push(new Pad(window.sharedState, this.pad_elements[i]));
+    this.pads[''+i] = new Pad(this.pad_elements[i]);
   }
+
+};
+
+var Pad = function(el) {
+
+  this.el = el;
+  this.sounds = [];
+  this.writeMode = false;
 
   // event Handlers
   var self = this;
-  this.toggleWrite = function(e) {
+  this.el.addEventListener('touchstart', function(e) {
 
     var padId;
     if (e.target.className.split(' ')[0] === 'pad') {
       padId = e.target.id.split('-')[1];
 
       // if pad write mode is on, but going to off
-      if (self.pads[padId].writeMode) {
+      if (window.sharedState.pads[padId].writeMode) {
 
+        // get active keys
+        var active_keys = [];
+        for (var key in window.sharedState.keys) {
+          if (window.sharedState.keys[key].duration) window.sharedState.pads[padId].sounds.push({
+            duration: window.sharedState.keys[key].duration,
+            patchName: window.sharedState.keys[key].patchName,
+            freq: window.sharedState.keys[key].patchName,
+            soundSource: window.sharedState.keys[key].soundSource,
+
+          });
+        } 
         // push active keys
-        window.sharedState.keys.forEach(function(key){
-          //console.log(key);
-          if (key.active) self.pads[padId].sounds.push('abc');
-        }.bind(self));
-        // wipe old keys
-       // sharedState.keys = [];
+        //if (key.active) window.sharedState.pads[padId].sounds.push(window.sharedState.keys['A0']);
         
       }
-      self.pads[padId].writeMode = !self.pads[padId].writeMode;
-      console.log("write mode for pad # %s is %s", padId, (self.pads[padId].writeMode) ? 'on.' : 'off.');
+      window.sharedState.pads[padId].writeMode = !window.sharedState.pads[padId].writeMode;
+      console.log("write mode for pad # %s is %s", padId, (window.sharedState.pads[padId].writeMode) ? 'on.' : 'off.');
     }
-  };
+  });
 
-  self.el.addEventListener('touchstart', self.toggleWrite);
 
-};
 
-var Pad = function(sharedState, el) {
-  this.el = el;
-  this.sharedState = sharedState;
-  this.sounds = [];
-  this.writeMode = false;
+
 };
 
 
@@ -125,8 +142,8 @@ var scale = generateScale(440);
 
 window.sharedState = {
 
-  keys: [], // keys currently held down
-  pads: [], // pads in write mode
+  keys: {}, // keys currently held down
+  pads: {}, // pads in write mode
 
 };
 
