@@ -1,52 +1,66 @@
 {
-	"name": "websynth",
-	"version": "1.0.0",
-	"description": "Web Synth",
-	"main": "server.js",
-	"scripts": {
-		"start": "webpack-dev-server --content-base app --hot"
-	},
-	"repository": {
-		"type": "git",
-		"url": ""
-	},
-	"keywords": [
-		"code",
-		"fellows",
-		"websynth",
-		"angular",
-		"mongodb"
-	],
-	"author": "Brian Finck, Earl Duncan, Alex Ramsdell and Stan Zhao",
-	"license": "ISC",
-	"bugs": {
-		"url": ""
-	},
-	"dependencies": {
-		"angular": "^1.4.7",
-		"angular-route": "^1.4.7",
-		"bourbon": "^4.2.5",
-		"gulp": "^3.8.11",
-		"gulp-autoprefixer": "^2.1.0",
-		"gulp-changed": "^1.1.1",
-		"gulp-filesize": "0.0.6",
-		"gulp-minify-css": "~0.5.1",
-		"gulp-ng-config": "^1.2.1",
-		"gulp-notify": "^2.2.0",
-		"gulp-rename": "^1.2.2",
-		"gulp-sass": "~1.3.3",
-		"gulp-sourcemaps": "^1.5.0",
-		"gulp-uglify": "^1.1.0",
-		"gulp-util": "^3.0.4",
-		"gulp-webserver": "^0.9.0",
-		"lodash": "^3.3.1",
-		"merge-stream": "^0.1.7",
-		"node-bourbon": "^4.2.3",
-		"node-neat": "^1.7.2",
-		"node-sass": "^3.3.3",
-		"pretty-hrtime": "~1.0.0",
-		"require-dir": "^0.1.0",
-		"vinyl-source-stream": "~1.0.0",
-		"webpack-stream": "^2.1.1"
-	}
+  "name": "websynth",
+  "version": "1.0.0",
+  "description": "Web Synth",
+  "main": "server.js",
+  "scripts": {
+    "start": "webpack-dev-server --content-base app --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "code",
+    "fellows",
+    "websynth",
+    "angular",
+    "mongodb"
+  ],
+  "author": "Brian Finck, Earl Duncan, Alex Ramsdell and Stan Zhao",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "dependencies": {
+    "angular": "^1.4.7",
+    "angular-route": "^1.4.7",
+    "body-parser": "1.14.0",
+    "bourbon": "^4.2.5",
+    "cookie-parser": "1.4.0",
+    "express": "4.13.3",
+    "express-session": "1.11.3",
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-changed": "^1.1.1",
+    "gulp-filesize": "0.0.6",
+    "gulp-minify-css": "~0.5.1",
+    "gulp-ng-config": "^1.2.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "~1.3.3",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.4",
+    "gulp-webserver": "^0.9.0",
+    "lodash": "^3.3.1",
+    "merge-stream": "^0.1.7",
+    "method-override": "2.3.5",
+    "mongodb": "^2.0.43",
+    "mongoose": "^4.1.7",
+    "morgan": "1.6.1",
+    "node-bourbon": "^4.2.3",
+    "node-neat": "^1.7.2",
+    "node-sass": "^3.3.3",
+    "passport": "0.3.0",
+    "passport-facebook": "^2.0.0",
+    "passport-facebook-offline": "^0.1.5",
+    "passport-google": "0.3.0",
+    "passport-google-oauth": "0.2.0",
+    "passport-google-oauth2": "0.1.6",
+    "pretty-hrtime": "~1.0.0",
+    "require-dir": "^0.1.0",
+    "vinyl-source-stream": "~1.0.0",
+    "webpack-stream": "^2.1.1"
+  }
 }

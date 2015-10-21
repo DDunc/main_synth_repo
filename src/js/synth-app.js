@@ -1,4 +1,5 @@
-var angular = require('angular');
+require('angular/angular');
+
 var route = require('angular-route');
 
 (function() {
@@ -14,7 +15,6 @@ var route = require('angular-route');
 			templateUrl: "html/keyboard.html",
 			controller: "SynthCtrl",
 		})
-
 		////////////////////////
 			.otherwise({
 			redirectTo: "/synth",
