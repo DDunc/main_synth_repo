@@ -35,7 +35,7 @@ usersRouter.get('/auth/google',
   });
 
 usersRouter.get('/auth/google/return',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     console.log("auth/google/return success!");
     res.redirect('/');

@@ -16,6 +16,12 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
 var FacebookStrategy = require("passport-facebook");
+//var eventEmitter = require("events").EventEmitter;
+//var ee = new EventEmitter();
+
+//ee.emit('newUser', req, res){
+
+//}
 //var presetRouter = require(__dirname + '/backend/routes/users_routes');
 
 // API Access link for creating client ID and secret:
@@ -140,6 +146,7 @@ app.get('/account', ensureAuthenticated, function(req, res){
 app.get('/auth/google/return',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
+    console.log("res", res);
     process.nextTick(function() {
       findOrCreateUser(req, res, "googleId")
     })
@@ -154,7 +161,12 @@ function findOrCreateUser(req, res, stratId) {
     if(user){
       req.dbId = user._id.toString();
       console.log(req.dbId);
-      res.redirect("/");
+      res.body.user = req.user;
+      req.login();
+      res.location("/");
+      res.send({user: user})
+      //res.send(user);
+      //res.redirect("/")
     }
     if(!user) {
       var newUser = new User();
@@ -163,11 +175,14 @@ function findOrCreateUser(req, res, stratId) {
       newUser[stratId] = req.user.id;
       newUser.displayName = req.user.displayName;
       console.log(req.dbId);
+
       var newPreset = new Preset();
       newPreset.ownerId = req.dbId;
       newPreset.presetName = req.user.id + " space bass";
       newPreset.isPublic = true;
       //newUser.googleProfile = req.user;
+      //function saveDocument(){};
+      //refactor to be
       newUser.save(function(err, user){
         if (err){
           console.log(err);
@@ -176,6 +191,7 @@ function findOrCreateUser(req, res, stratId) {
           if (err){
             console.log(err);
           }
+          //res.send(newUser);
           res.redirect("/");
         })
       })
@@ -200,5 +216,5 @@ app.listen(port, function(){
 function ensureAuthenticated(req, res, next) {
   console.log(req)
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/');
+  res.redirect('/fail');
 }
