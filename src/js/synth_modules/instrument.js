@@ -100,6 +100,7 @@ var Sequencer = function() {
       console.log('beat %s', i);
       if (window.sharedState.pads[i].sounds.length) {
         console.log(window.sharedState.pads[i].sounds[0].soundSource);
+        window.sharedState.pads[i].sounds[0].soundSource.playFor(self.duration);
         // loop through sounds and start them all
       }
       i = (i + 1)%8;
