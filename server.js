@@ -14,14 +14,16 @@ var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
+var Preset = require(__dirname + "/models.preset");
+var presetRouter = require("backend/routes/preset_routes");
 
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 // Get your codes here, put them in the .env file.
 var port = process.env.PORT || 3000;
-var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -69,6 +71,7 @@ passport.use(new GoogleStrategy({
 ));
 
 var app = express();
+app.use('/api', presetRouter);
 
 // configure Express
   app.use(logger('dev'));
