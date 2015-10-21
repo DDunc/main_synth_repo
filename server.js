@@ -15,6 +15,10 @@ var handleError = require(__dirname + '/backend/lib/handle_error');
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
+var presetRouter = require(__dirname + "/backend/routes/preset_routes");
+var ensureAuthenticated = require(__dirname + "/backend/lib/ensureAuth");
+
+
 var FacebookStrategy = require("passport-facebook");
 //var presetRouter = require(__dirname + '/backend/routes/users_routes');
 
@@ -24,6 +28,7 @@ var FacebookStrategy = require("passport-facebook");
 var port = process.env.PORT || 3000;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
 var FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
 var FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
 
@@ -71,6 +76,7 @@ passport.use(new GoogleStrategy({
   )}));
 
 var app = express();
+app.use('/api', presetRouter);
 
 /* app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -103,8 +109,8 @@ app.get('/auth/facebook', passport.authenticate('facebook'),function(req, res){
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/' }),
 function(req, res) {
   process.nextTick(function() {
-    findOrCreateUser(req, res, "facebookId")
-  })
+    findOrCreateUser(req, res, "facebookId");
+  });
 });
 
   //app.use(express.static(__dirname + '/src/html/login.html'));
@@ -141,8 +147,8 @@ app.get('/auth/google/return',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     process.nextTick(function() {
-      findOrCreateUser(req, res, "googleId")
-    })
+      findOrCreateUser(req, res, "googleId");
+    });
   });
 
 //helper function, can be moved to lib
@@ -177,10 +183,10 @@ function findOrCreateUser(req, res, stratId) {
             console.log(err);
           }
           res.redirect("/");
-        })
-      })
+        });
+      });
     };
-  })
+  });
 }
 
 //there i also a req.login request per https://github.com/jaredhanson/passport/blob/master/lib/http/request.js
@@ -197,8 +203,3 @@ app.listen(port, function(){
 
 // Simple route middleware to ensure user is authenticated.
 //  Use this function as middleware on any resource that needs to be protected.
-function ensureAuthenticated(req, res, next) {
-  console.log(req)
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/');
-}
