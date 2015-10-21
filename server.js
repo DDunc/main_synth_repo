@@ -106,8 +106,9 @@ var app = express();
 app.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+    process.nextTick(function() {
+      findOrCreateUser(req, res, "facebookId")
+    })
   });
   //app.use(express.static(__dirname + '/src/html/login.html'));
 
@@ -146,29 +147,35 @@ app.get('/account', ensureAuthenticated, function(req, res){
 app.get('/auth/google/return',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    console.log(req.user);
-    console.log(req.account);
-    User.findOne({'googleId': req.user.id}, function(err, user) {
-      req.dbId = user._id;
-      if (err){
-        return handleError(err, res);
-      }
-
-      if(!user) {
-        var newUser = new User();
-        newUser.googleId = req.user.id;
-        newUser.displayName = req.user.displayName;
-        //newUser.googleProfile = req.user;
-        newUser.save(function(err, user){
-          if (err)
-            console.log(err);
-          res.redirect("/#user/" + user._id);
-        });
-      }
-    });
+    process.nextTick(function() {
+      findOrCreateUser(req, res, "googleId")
+    })
   });
 
-  
+//helper function, can be moved to lib
+function findOrCreateUser(req, res, stratId) {
+  User.findOne({strat: req.user.id}, function(err, user) {
+    if (err){
+      return handleError(err, res);
+    }
+    if(user){
+      req.dbId = user._id;
+      res.redirect("/#user/" + user._id);
+    }
+    if(!user) {
+      var newUser = new User();
+      newUser[stratId] = req.user.id;
+      newUser.displayName = req.user.displayName;
+      //newUser.googleProfile = req.user;
+      newUser.save(function(err, user){
+        if (err){
+          console.log(err);
+        }
+        res.redirect("/#user/" + user._id);
+      })
+    };
+  })
+}
 
 //there i also a req.login request per https://github.com/jaredhanson/passport/blob/master/lib/http/request.js
 app.get('/logout', function(req, res){
@@ -184,6 +191,7 @@ app.listen(port, function(){
 // Simple route middleware to ensure user is authenticated.
 //  Use this function as middleware on any resource that needs to be protected.
 function ensureAuthenticated(req, res, next) {
+  console.log(req)
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/');
 }

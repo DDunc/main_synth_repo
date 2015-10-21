@@ -29,6 +29,7 @@ build
 
 #local environmental variables
 .env
+Procfile
 
 #database folder
 synth_dev
