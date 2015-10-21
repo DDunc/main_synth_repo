@@ -1,0 +1,8 @@
+@mixin button-animation($value-one, $value-two) {
+	background-color: $value-one;
+	background-image: -webkit-linear-gradient(bottom, $value-one, $value-one);
+	background-image: linear-gradient(bottom, $value-one, $value-one);
+	box-shadow: 0 .5em 0.625em 0 rgba(0, 0, 0, .3), inset 0 0.250em 0.063em 0063em $value-two, inset 0 -0.063em 0.063em 0.063em rgba(204,198,197,.6);
+	-webkit-transition: all .1s linear;
+	transition: all .1s linear;
+}
