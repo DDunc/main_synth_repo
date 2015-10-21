@@ -1,25 +1,3 @@
-var Instrument = function(sharedState) {
-
-  // some Dom els
-  // a keys model container 
-  // and a reference to shared sharedState object, 'sharedState' 
-
-  this.sharedState = sharedState;
-  this.el = document.getElementById('instrument');
-  this.keyElements = this.el.querySelectorAll('div');
-
-  // model for Instrument - an array of key objects
-  this.keys = [];
-  for (var i=0; i<this.keyElements.length; i++) {
-    this.keys[i] = new Key(this.keyElements[i], new Generator(ctx,scale[i]),sharedState); 
-  }
-
-  // put keys on shared state
-  sharedState.keys = this.keys;
-
-};
-
-
 var Key = function(el, soundSource, sharedState) {
 
   // Web Audio Context, the Dom El and the soundSource 
@@ -80,6 +58,28 @@ Key.prototype.bindKeyTouchEnd = function() {
 
   }.bind(this));
 };
+
+
+var Instrument = function(sharedState, ctx) {
+
+  // some Dom els
+  // a keys model container 
+  // and a reference to shared sharedState object, 'sharedState' 
+
+  this.el = document.getElementById('instrument');
+  this.keyElements = this.el.querySelectorAll('div');
+
+  // model for Instrument - an array of key objects
+  this.keys = [];
+  for (var i=0; i<this.keyElements.length; i++) {
+    this.keys[i] = new Key(this.keyElements[i], new Generator(ctx,scale[i]),sharedState);
+  }
+
+  // put keys on shared state
+  sharedState.keys = this.keys;
+
+};
+
 
 var Sequencer = function(sharedState) {
 
@@ -143,10 +143,10 @@ var sharedState = {
 
 };
 
-var instrument = new Instrument(sharedState);
+var instrument = new Instrument(sharedState, ctx);
 for (var i = 0; i < instrument.keys; i++) {
-  instrument.keys[i].bindKeyTouchStart();
-  instrument.keys[i].bindKeyTouchEnd();
+//  instrument.keys[i].bindKeyTouchStart();
+ // instrument.keys[i].bindKeyTouchEnd();
 }
 
 var sequencer = new Sequencer(sharedState);
