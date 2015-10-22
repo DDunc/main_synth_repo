@@ -23,6 +23,7 @@ presetRouter.get("/get_all", ensureAuthenticated, function(req, res) {
     if (err) {
       console.log(err);
     }
+    console.log(res);
     res.send(allPresetData) //sent as an array!
   })
 })
