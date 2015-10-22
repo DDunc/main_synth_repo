@@ -13,7 +13,7 @@ module.exports = function findOrCreateUser(req, res, stratId) {
              // handle error here.
          }); */
 
-  var stratObj = {}
+  var stratObj = {};
   stratObj[stratId] = req.user.id;
   stratObj = JSON.stringify(stratObj);
 
