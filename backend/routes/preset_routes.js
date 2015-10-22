@@ -30,8 +30,8 @@ presetRouter.get("/get_all", ensureAuthenticated, function(req, res) {
 
 //query parameter
 
-presetRouter.post("/save_preset", ensureAuthenticated, jsonParser, function(req, res){
-  Preset.create({patchName: req.body.patchName}, function(err){
+presetRouter.post("/save_preset", ensureAuthenticated, function(req, res){
+  Preset.create({ isPublic: true, ownerId: req.user.dbId, freqRange: req.body.freqRange, src: req.body.src, processing: req.body.processing, dst: req.body.processing, patchName: req.body.patchName}, function(err){
     if(err){
       console.log(err);
     }
