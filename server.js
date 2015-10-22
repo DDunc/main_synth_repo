@@ -89,6 +89,7 @@ app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(methodOverride());
+//for development only, use mongo-connect for actual solution
 app.use(session({
   secret: 'helloNSA',
   resave: true,
