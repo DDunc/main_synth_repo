@@ -3,11 +3,11 @@ require("./synth-app.js");
 
 // ========= START OF CONTROLLER ======= //
 angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$http", function(SynthService, $scope, $http) {
- $scope.profile = {};
- $scope.preset = {};
+ // $scope.profile = {};
+ // $scope.preset = {};
 
  $scope.signIn = function(){
-    $http.get("api/auth/google")
+    $http.get("/auth/google")
       .then(function(res){
         $scope.profile = res.data; 
         console.log('Authentication successful!');
@@ -17,16 +17,16 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
       }); 
   };
 
-  $scope.getPreset = function(){
-    $http.get("api/get_preset")
-      .then(function(res){
-        $scope.preset = res.data;
-        console.log('getting preset successful!');
+  // $scope.getPreset = function(){
+  //   $http.get("api/get_preset")
+  //     .then(function(res){
+  //       $scope.preset = res.data;
+  //       console.log('getting preset successful!');
         
-      }, function(res){
-        console.log(res);
-      }); 
-  };
+  //     }, function(res){
+  //       console.log(res);
+  //     }); 
+  // };
 
   $scope.savePreset = function(preset){
     $http.post("api/save_preset", preset)
@@ -49,4 +49,35 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
         console.log(res);
       }); 
   };
+
+  $scope.getPreset = function(){
+     $http.get("api/get_preset")
+        .then(function(res){
+            $scope.userPresets = res.data;
+        },function(res){
+          console.log("ERRORORORO");
+        });
+    };
+
+  $scope.getAll = function(){
+    $http.get("api/get_all")
+      .then(function(res){
+        console.log(res);
+        $scope.allPresets = res.data; 
+      },function(res){
+        console.log(res);
+      });
+  };
+
 }]);
+
+
+
+
+
+
+
+
+
+
+
