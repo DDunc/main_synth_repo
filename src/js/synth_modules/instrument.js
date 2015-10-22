@@ -47,8 +47,6 @@ var Key = function(el, soundSource) {
       window.sharedState.keys[keyId].endTime - 
       window.sharedState.keys[keyId].startTime;
 
-    // and stop the sound
-    self.soundSource.stop();
 
   });
 };
@@ -69,6 +67,7 @@ var Instrument = function(ctx) {
     soundSource = new Generator(ctx,scale[i]); 
     this.keys['' + i] = new Key(this.keyElements[i], soundSource, window.sharedState);
   }
+
 
 };
 
@@ -111,6 +110,7 @@ var Sequencer = function() {
   this.stopButton.addEventListener('touchstart', function(e) {
     clearInterval(self.play_handler);
   });
+
 };
 
 var Pad = function(el) {
@@ -149,9 +149,6 @@ var Pad = function(el) {
       console.log("write mode for pad # %s is %s", padId, (window.sharedState.pads[padId].writeMode) ? 'on.' : 'off.');
     }
   });
-
-
-
 
 };
 
