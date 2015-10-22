@@ -60,6 +60,7 @@ var Instrument = function(ctx) {
   // and a reference to shared sharedState object, 'sharedState'
 
   this.el = document.getElementById('instrument');
+  this.exportButton = document.getElementById('exportButton');
   this.keyElements = this.el.querySelectorAll('div');
 
   // model for Instrument - an array of key objects
@@ -72,10 +73,26 @@ var Instrument = function(ctx) {
   keyArr.forEach(function(key){
     key.touchStart();
     key.touchEnd();
-  })
+  });
 };
 
+Instrument.prototype.exportInstrumentSettings = function() {
 
+  var settings = this.keys[0]; 
+
+  this.exportButton.addEventListener('touchstart', function(e) {
+    window.instrumentExport = {
+      patchName : settings.patchName,
+      freqRange: {
+        min : 440,
+        max : 880,
+      }, 
+    };  
+  });
+
+
+  
+}
 
 var Sequencer = function() {
 
@@ -86,7 +103,7 @@ var Sequencer = function() {
   this.pad_elements = this.el.querySelectorAll('div');
   this.tempo = 500;
   this.bars = 8;
-  this.play_handler;
+  this.play_handler = null;
 
   // model initialization
   this.pads = sharedState.pads;
@@ -113,6 +130,8 @@ var Sequencer = function() {
   this.stopButton.addEventListener('touchstart', function(e) {
     clearInterval(self.play_handler);
   });
+
+
 };
 
 var Pad = function(el) {
@@ -151,11 +170,7 @@ var Pad = function(el) {
     }
   });
 
-
-
-
 };
-
 
 // main initialization code
 // requires instrumentModule import first!!!
@@ -171,4 +186,5 @@ sharedState = {
 };
 
 var instrument = new Instrument(ctx);
+instrument.exportInstrumentSettings();
 var sequencer = new Sequencer();
