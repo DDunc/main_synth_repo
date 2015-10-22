@@ -46,7 +46,8 @@
 				<li><a href="#">SUPPORT</a></li>
 			</ul>
       <br>
-
+      <button ng-click="savePreset()">Save Preset</button>
+      <br>
       <input type="search" ng-model="q" placeholder="filter user presets..."/>
       <ul class="presetResults">
         <li ng-repeat="preset in userPresets | filter:q as results">

@@ -1,3 +1,3 @@
-angular.module("synthy").factory('SynthFactory', function SynthFactory() {
-	return "hello";
-});
+// angular.module("synthy").factory('SynthFactory', function SynthFactory() {
+// 	return "hello";
+// });
