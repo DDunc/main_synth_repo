@@ -12,7 +12,10 @@ module.exports = function findOrCreateUser(req, res, stratId) {
          }, function(err) {
              // handle error here.
          }); */
-  var stratObj = JSON.stringify({stratId: req.user.id})
+
+  var stratObj = {}
+  stratObj[stratId] = req.user.id;
+  stratObj = JSON.stringify(stratObj);
 
   User.findOne(stratObj).exec(function(err, user) {
     if(user){
