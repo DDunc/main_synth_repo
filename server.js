@@ -20,6 +20,8 @@ var ensureAuthenticated = require(__dirname + "/backend/lib/ensureAuth");
 
 
 var FacebookStrategy = require("passport-facebook");
+<<<<<<< HEAD
+=======
 //var eventEmitter = require("events").EventEmitter;
 //var ee = new EventEmitter();
 
@@ -27,6 +29,7 @@ var FacebookStrategy = require("passport-facebook");
 
 //}
 //var presetRouter = require(__dirname + '/backend/routes/users_routes');
+>>>>>>> 29cdd6ccbebd524212a86d163bd74059c5475d43
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
@@ -201,7 +204,7 @@ function findOrCreateUser(req, res, stratId) {
           res.redirect("/");
         });
       });
-    };
+    }
   });
 }
 
