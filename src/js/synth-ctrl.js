@@ -17,23 +17,11 @@ angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($s
       }); 
   };
 
-  // $scope.getPreset = function(){
-  //   $http.get("api/get_preset")
-  //     .then(function(res){
-  //       $scope.preset = res.data;
-  //       console.log('getting preset successful!');
-        
-  //     }, function(res){
-  //       console.log(res);
-  //     }); 
-  // };
-
   $scope.savePreset = function(preset){
     $http.post("api/save_preset", preset)
       .then(function(res){
       console.log('saving preset successful!');
-        $scope.getPreset();
-        //do some stuff
+      alert("preset saved");
       }, function(res){
         console.log("something went wrong");
       });

@@ -40,10 +40,7 @@
 			<ul>
 				<li><a href="/auth/google">LOGIN WITH GOOGLE</a></li>
 					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
-				<li><a href="#">TERMS OF USE</a></li>
-				<li><a href="#">PRIVACY POLICY</a></li>
-				<li><a href="#">CONTACT</a></li>
-				<li><a href="#">SUPPORT</a></li>
+				<li><a href="https://github.com/synthr/main_synth_repo">GitHub/a></li>
 			</ul>
       <br>
       <button ng-click="savePreset()">Save Preset</button>
@@ -51,7 +48,7 @@
       <input type="search" ng-model="q" placeholder="filter user presets..."/>
       <ul class="presetResults">
         <li ng-repeat="preset in userPresets | filter:q as results">
-          <button ng-click="playPreset()">{{preset.patchName}}</button>
+          <button ng-click="getPreset()">{{preset.patchName}}</button>
         </li>
         <li class="animate-repeat" ng-if="results.length == 0">
           <strong>No presets found...bruh</strong>
