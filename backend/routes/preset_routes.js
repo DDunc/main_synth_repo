@@ -8,7 +8,7 @@ var ensureAuthenticated = require(__dirname + "/../lib/ensureAuth");
 
 
 presetRouter.get("/get_preset", ensureAuthenticated, function(req, res) {
-  console.log("THIS IS REQ.USER", req.user);
+  console.log("THIS IS REQ.USER", req);
   Preset.find({ownerId: req.user.dbId}, function(err, presetData){
     if (err){
       console.log(err);
@@ -23,9 +23,9 @@ presetRouter.get("/get_all", ensureAuthenticated, function(req, res) {
     if (err) {
       console.log(err);
     }
-    res.send(allPresetData) //sent as an array!
-  })
-})
+    res.send(allPresetData); //sent as an array!
+  });
+});
 
 //query parameter
 
