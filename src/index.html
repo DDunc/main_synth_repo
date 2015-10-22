@@ -105,7 +105,7 @@
       <input type="search" ng-model="q" placeholder="filter user presets..."/>
       <ul class="presetResults">
         <li ng-repeat="preset in userPresets | filter:q as results">
-          <button ng-click="playPreset()">{{preset.presetName}}</button>
+          <button ng-click="playPreset()">{{preset.patchName}}</button>
         </li>
         <li class="animate-repeat" ng-if="results.length == 0">
           <strong>No presets found...bruh</strong>

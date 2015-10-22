@@ -28,7 +28,8 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       Preset.find({ownerId: user._id})
         .exec(function(err, data) {
           res.location("/");
-          res.send({dbPreset: data})
+          console.log("sending existing account");
+          res.send({dbUser: user, dbPreset: data})
         },
         function(err){
           console.log(err);
@@ -44,8 +45,8 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       newUser.displayName = req.user.displayName;
       var newPreset = new Preset();
       newPreset.ownerId = newUser._id.toString();
-      newPreset.presetName = req.user.id + " space bass";
-      newPreset.isPublic = true;
+      newPreset.patchName = req.user.id + " space bass";
+      newPreset.isPublic = false;
       //newUser.googleProfile = req.user;
       //function saveDocument(){};
       //refactor to be

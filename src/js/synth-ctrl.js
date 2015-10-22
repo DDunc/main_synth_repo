@@ -2,7 +2,7 @@ require("./synth-app.js");
 
 
 // ========= START OF CONTROLLER ======= //
-angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$http", function(SynthService, $scope, $http) {
+angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($scope, $http) {
  // $scope.profile = {};
  // $scope.preset = {};
 
@@ -31,12 +31,12 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
   $scope.savePreset = function(preset){
     $http.post("api/save_preset", preset)
       .then(function(res){
+      console.log('saving preset successful!');
+        $scope.getPreset();
         //do some stuff
-        console.log('saving preset successful!');
-        
       }, function(res){
-        console.log(res);
-      }); 
+        console.log("something went wrong");
+      });
   };
 
   $scope.removePreset = function(preset){
@@ -44,11 +44,11 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
       .then(function(res){
         //do some stuff
         console.log('removing preset successful!');
-        
       }, function(res){
         console.log(res);
-      }); 
+      });
   };
+
 
   $scope.getPreset = function(){
      $http.get("api/get_preset")
@@ -63,7 +63,7 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
     $http.get("api/get_all")
       .then(function(res){
         console.log(res);
-        $scope.allPresets = res.data; 
+        $scope.allPresets = res.data;
       },function(res){
         console.log(res);
       });
