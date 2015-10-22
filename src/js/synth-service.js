@@ -1,12 +1,12 @@
-require("./synth-app.js");
+// require("./synth-app.js");
 
-(function () {
-	"use strict";
+// (function () {
+// 	"use strict";
 
-	angular.module("synthy").service("SynthService", ["$http", function ($http) {
-		this.dataStore = [];
+// 	angular.module("synthy").service("SynthService", ["$http", function ($http) {
+// 		this.dataStore = [];
 		
 	
-	}]);
+// 	}]);
 
-}());
+// }());
