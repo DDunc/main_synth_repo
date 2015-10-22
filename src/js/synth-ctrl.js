@@ -3,11 +3,11 @@ require("./synth-app.js");
 
 // ========= START OF CONTROLLER ======= //
 angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$http", function(SynthService, $scope, $http) {
- $scope.profile = {};
- $scope.preset = {};
+ // $scope.profile = {};
+ // $scope.preset = {};
 
  $scope.signIn = function(){
-    $http.get("api/auth/google")
+    $http.get("/auth/google")
       .then(function(res){
         $scope.profile = res.data; 
         console.log('Authentication successful!');
@@ -17,16 +17,16 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
       }); 
   };
 
-  $scope.getPreset = function(){
-    $http.get("api/get_preset")
-      .then(function(res){
-        $scope.preset = res.data;
-        console.log('getting preset successful!');
+  // $scope.getPreset = function(){
+  //   $http.get("api/get_preset")
+  //     .then(function(res){
+  //       $scope.preset = res.data;
+  //       console.log('getting preset successful!');
         
-      }, function(res){
-        console.log(res);
-      }); 
-  };
+  //     }, function(res){
+  //       console.log(res);
+  //     }); 
+  // };
 
   $scope.savePreset = function(preset){
     $http.post("api/save_preset", preset)
@@ -50,20 +50,24 @@ angular.module('synthy').controller('SynthCtrl', ["SynthService", "$scope", "$ht
       }); 
   };
 
-   
-  $scope.presets  = [
-  {name:'John', age:25, gender:'boy'},
-  {name:'Jessie', age:30, gender:'girl'},
-  {name:'Johanna', age:28, gender:'girl'},
-  {name:'Joy', age:15, gender:'girl'},
-  {name:'Mary', age:28, gender:'girl'},
-  {name:'Peter', age:95, gender:'boy'},
-  {name:'Sebastian', age:50, gender:'boy'},
-  {name:'Erika', age:27, gender:'girl'},
-  {name:'Patrick', age:40, gender:'boy'},
-  {name:'Samantha', age:60, gender:'girl'}
-];
+  $scope.getPreset = function(){
+     $http.get("api/get_preset")
+        .then(function(res){
+            $scope.userPresets = res.data;
+        },function(res){
+          console.log("ERRORORORO");
+        });
+    };
 
+  $scope.getAll = function(){
+    $http.get("api/get_all")
+      .then(function(res){
+        console.log(res);
+        $scope.allPresets = res.data; 
+      },function(res){
+        console.log(res);
+      });
+  };
 
 }]);
 

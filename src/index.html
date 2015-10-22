@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="css/main.css">
 		<title>Websynth</title>
 	</head>
-	<body>
+	<body ng-controller="SynthCtrl" ng-init="getPreset()">
 		<!-- NAV -->
 		<header class="header-container">
 			<h1 class="logo"></h1>
@@ -36,7 +36,7 @@
 
 		</main>
 		<!-- FOOTER  -->
-		<footer ng-controller="SynthCtrl">
+		<footer>
 			<ul>
 				<li><a href="/auth/google">LOGIN WITH GOOGLE</a></li>
 					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
@@ -47,10 +47,10 @@
 			</ul>
       <br>
 
-      <input type="search" ng-model="q" placeholder="filter presets..."/>
+      <input type="search" ng-model="q" placeholder="filter user presets..."/>
       <ul class="presetResults">
-        <li ng-repeat="preset in presets | filter:q as results">
-          {{preset}}
+        <li ng-repeat="preset in userPresets | filter:q as results">
+          <button ng-click="playPreset()">{{preset.presetName}}</button>
         </li>
         <li class="animate-repeat" ng-if="results.length == 0">
           <strong>No results found...</strong>
