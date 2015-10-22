@@ -35,3 +35,5 @@ Procfile
 
 #database folder
 synth_dev
+
+.env
