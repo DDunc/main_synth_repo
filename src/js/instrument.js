@@ -155,4 +155,3 @@ sharedState = {
 var instrument = new Instrument(ctx);
 instrument.exportInstrumentSettings();
 instrument.adjustVolume();
-var sequencer = new Sequencer();
