@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Web Synth",
   "main": "server.js",
-  "scripts": {
-    "start": "webpack-dev-server --content-base app --hot"
-  },
   "engines": {
     "node": "0.12.7"
   },
