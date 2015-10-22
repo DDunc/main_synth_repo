@@ -1,6 +1,7 @@
-var Generator = function(ctx, frequency) {
-  this.patchName = 'spaceBass';
-  this.noteName = 'A0';
+
+var Generator = function(ctx, frequency, noteName) {
+  this.patchName = 'simpleSine';
+  this.noteName = noteName;
   this.osc = ctx.createOscillator();
   this.osc.frequency.value = frequency;
   this.gainNode = ctx.createGain();
@@ -12,7 +13,6 @@ var Generator = function(ctx, frequency) {
 
 Generator.prototype.start = function() {
   this.gainNode.gain.value = 1;
-  this.osc.start(0);
 };
 
 Generator.prototype.stop = function() {
@@ -30,7 +30,8 @@ Generator.prototype.playFor = function(duration) {
 
 
 Generator.prototype.export = function() {
-  window.synthExport = {
+  return JSON.stringify({
+    username: 'al_420_jesusBlunt',
     patchName : this.patchName, 
     freqRange: {
         min: 440,
@@ -39,5 +40,12 @@ Generator.prototype.export = function() {
     src: 'oscillator',
     processing: ['gain'], 
 
-  };
+  });
 };
+
+
+/*
+ * 
+ *
+ *
+ */

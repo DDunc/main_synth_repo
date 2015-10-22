@@ -4,9 +4,12 @@ var mongoose = require("mongoose");
 //To Do: filter out illegal / *, <, etc characters with regex
 var presetSchema = new mongoose.Schema({
   ownerId: String,
-  presetName: String,
-  settings: Object,
-  isPublic: Boolean
+  patchName: String,
+  freqRange: Object,
+  src: String,
+  processing: String,
+  dst: String,
+  isPublic: { type: Boolean, default: false}
 });
 
 // 1) search the users collection, find the ID, then use that ID

@@ -28,7 +28,8 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       Preset.find({ownerId: user._id})
         .exec(function(err, data) {
           res.location("/");
-          res.send({dbPreset: data})
+          console.log("sending existing account");
+          res.send({dbUser: user, dbPreset: data})
         },
         function(err){
           console.log(err);
