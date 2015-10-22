@@ -20,6 +20,7 @@ var userRouter = require(__dirname + "/backend/routes/user_routes");
 var ensureAuthenticated = require(__dirname + "/backend/lib/ensureAuth");
 var findOrCreateUser = require(__dirname + "/backend/lib/find_or_create");
 var FacebookStrategy = require("passport-facebook");
+
 //var eventEmitter = require("events").EventEmitter;
 //var ee = new EventEmitter();
 
@@ -27,6 +28,7 @@ var FacebookStrategy = require("passport-facebook");
 
 //}
 //var presetRouter = require(__dirname + '/backend/routes/users_routes');
+
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
@@ -98,6 +100,7 @@ app.use(passport.session());
 app.use(express.static(__dirname + '/build'));
 app.use('/api', presetRouter);
 app.use('/auth', userRouter);
+
 
 app.listen(port, function(){
   console.log("I am staying awhile and listening on " + port);
