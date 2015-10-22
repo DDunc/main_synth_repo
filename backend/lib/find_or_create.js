@@ -45,8 +45,8 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       newUser.displayName = req.user.displayName;
       var newPreset = new Preset();
       newPreset.ownerId = newUser._id.toString();
-      newPreset.presetName = req.user.id + " space bass";
-      newPreset.isPublic = true;
+      newPreset.patchName = req.user.id + " space bass";
+      newPreset.isPublic = false;
       //newUser.googleProfile = req.user;
       //function saveDocument(){};
       //refactor to be
