@@ -37,7 +37,7 @@
 
 		</main>
 		<!-- FOOTER  -->
-		<footer>
+		<footer ng-controller="SynthCtrl">
 			<ul>
 				<li><a href="/auth/google">LOGIN WITH GOOGLE</a></li>
 					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
@@ -47,10 +47,17 @@
 				<li><a href="#">SUPPORT</a></li>
 			</ul>
       <br>
-      <form name="presetForm" ng-submit="submitForm()" 
-        <label>Seach Presets: <input ng-model="searchText"></label>
-        <button type="submit">Submit</button> 
-      </form>   
+
+      <input type="search" ng-model="q" placeholder="filter presets..."/>
+      <ul class="presetResults">
+        <li ng-repeat="preset in presets | filter:q as results">
+          {{preset}}
+        </li>
+        <li class="animate-repeat" ng-if="results.length == 0">
+          <strong>No results found...</strong>
+        </li>
+      </ul>
+    
 		</footer>
 		​
 		<!-- SCRIPT TAGS -->
