@@ -30,7 +30,7 @@ node_modules
 #local environmental variables
 .env
 Procfile
-
+build
 #database folder
 synth_dev
 
