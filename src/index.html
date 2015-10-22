@@ -24,12 +24,11 @@
 		<link rel="stylesheet" href="css/main.css">
 		<title>Websynth</title>
 	</head>
-	<body>
+	<body ng-controller="SynthCtrl" ng-init="getPreset()">
 		<!-- NAV -->
 		<header class="header-container">
 			<h1 class="logo"></h1>
 			<nav class="primary-nav-wrap">
-			
 			</nav>
 		</header>
 		<!-- SOME KIND OF NG-VIEW THING -->
@@ -46,6 +45,18 @@
 				<li><a href="#">CONTACT</a></li>
 				<li><a href="#">SUPPORT</a></li>
 			</ul>
+      <br>
+
+      <input type="search" ng-model="q" placeholder="filter user presets..."/>
+      <ul class="presetResults">
+        <li ng-repeat="preset in userPresets | filter:q as results">
+          <button ng-click="playPreset()">{{preset.presetName}}</button>
+        </li>
+        <li class="animate-repeat" ng-if="results.length == 0">
+          <strong>No presets found...bruh</strong>
+        </li>
+      </ul>
+    
 		</footer>
 		​
 		<!-- SCRIPT TAGS -->
