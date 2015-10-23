@@ -11,7 +11,7 @@ var Preset = require("./../../models/preset");
 
 chai.use(chaihttp);
 
-require("./../../server.js");
+require(__dirname + "./../server.js");
 
 describe("preset resource get/post", function(){
   it("should return preset on get", function(done){
@@ -24,6 +24,15 @@ describe("preset resource get/post", function(){
     });
   });
 
+  it("should prevent unauthorized post requests", function(done){
+    chai.request(url)
+    .post("/save_preset")
+    .send({ownerId: '12', patchName: 'unauthorized_person'})
+    .end(function(err, res) {
+      expect(!!err).to.eql(true);
+      done();
+    })
+  })
   it("should save preset", function(done){
     chai.request(url)
       .post("/save_preset")

@@ -15,7 +15,6 @@ module.exports = function findOrCreateUser(req, res, stratId) {
 
   var stratObj = {};
   stratObj[stratId] = req.user.id;
-  stratObj = JSON.stringify(stratObj);
 
   User.findOne(stratObj).exec(function(err, user) {
     if(user){
@@ -26,7 +25,6 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       res.user = req.user;
       Preset.find({ownerId: user._id})
         .exec(function(err, data) {
-          res.location("/");
           console.log("existing user account stuff is go");
           res.redirect("/");
         },
@@ -44,7 +42,7 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       newUser.displayName = req.user.displayName;
       var newPreset = new Preset();
       newPreset.ownerId = newUser._id.toString();
-      newPreset.patchName = req.user.id + "_space_bass";
+      newPreset.patchName = req.user.displayName + " default";
       newPreset.isPublic = false;
       //newUser.googleProfile = req.user;
       //function saveDocument(){};

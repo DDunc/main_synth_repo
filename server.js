@@ -1,5 +1,3 @@
-var util = require('util');
-var http = require('http');
 var express = require('express');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
@@ -10,13 +8,10 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
-
-//production
+//production mongoose
 //mongoose.connect(process.env.MONGOLAB_URI );
-
-//dev
+//dev mongoose
 mongoose.connect('mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
@@ -29,12 +24,8 @@ var baseURL = process.env.HEROKU_URL || "http://localhost:";
 
 //var eventEmitter = require("events").EventEmitter;
 //var ee = new EventEmitter();
-
 //ee.emit('newUser', req, res){
-
 //}
-//var presetRouter = require(__dirname + '/backend/routes/users_routes');
-
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
@@ -45,52 +36,10 @@ var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 var FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
 var FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
 
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
-//FB strategy, verify function
-passport.use(new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: baseURL + port + "/auth/facebook/callback",
-    enableProof: true
-  },
-  function(accessToken, refreshToken, profile, done) {
-    //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      //console.log(user);
-      process.nextTick(function() {
-        console.log(profile);
-        return done(null, profile);
-      });
-  }
-));
-
-// Use the GoogleStrategy within Passport
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: baseURL + port + "/auth/google/return"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, will need to be refactored
-    //this next tick is allegedly uneccessary, will test without
-    //TODO: seperate passport auth and usercreation, then use req.user info to make
-    //the db
-    process.nextTick(function () {
-    //second argument gets added to req.user
-      return done(null, profile);
-    }
-  )}
-));
+var passStrats = require("./backend/lib/pass_strats")
+passStrats();
 
 var app = express();
-
 // configure Express
 app.use(logger('dev'));
 app.use(cookieParser());
