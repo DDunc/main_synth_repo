@@ -9,8 +9,8 @@
 	}
 
 	li {
-		margin: 0;
-		width: 48%;
+		margin: 1em;
+		width: 70%;
 		display: -webkit-inline-flex;
 		display: inline-flex;
 		button {
@@ -25,7 +25,13 @@
 			transition: all .1s linear; 
 		}
 		p{
-			width: 30%;
+			width: 100%;
+			color: black;
+			background-color: white;
+			border-color: black;
+			border-radius: 10%;
+			padding-right: 1em;
+			margin-right: 1em;
 		}
 	}
 	button:active {
