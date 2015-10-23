@@ -58,7 +58,7 @@ module.exports = function findOrCreateUser(req, res, stratId) {
             console.log(err);
           }
           console.log("new user account stuff is go")
-          res.location("/");
+          res.redirect("/");
         });
       })
     };
