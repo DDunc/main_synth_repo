@@ -12,7 +12,12 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var addToDb = require(__dirname + '/backend/lib/add_to_db');
 var handleError = require(__dirname + '/backend/lib/handle_error');
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/synth_dev');
+
+//production
+//mongoose.connect(process.env.MONGOLAB_URI );
+
+//dev
+mongoose.connect('mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
 var presetRouter = require(__dirname + "/backend/routes/preset_routes");

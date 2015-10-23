@@ -24,12 +24,11 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       console.log("this is user", user);
       req.user.dbId = user._id.toString();
       res.user = req.user;
-      res.location("/");
       Preset.find({ownerId: user._id})
         .exec(function(err, data) {
           res.location("/");
-          console.log("sending existing account");
-          res.send({dbUser: user, dbPreset: data})
+          console.log("existing user account stuff is go");
+          res.redirect("/");
         },
         function(err){
           console.log(err);
@@ -45,7 +44,7 @@ module.exports = function findOrCreateUser(req, res, stratId) {
       newUser.displayName = req.user.displayName;
       var newPreset = new Preset();
       newPreset.ownerId = newUser._id.toString();
-      newPreset.patchName = req.user.id + " space bass";
+      newPreset.patchName = req.user.id + "_space_bass";
       newPreset.isPublic = false;
       //newUser.googleProfile = req.user;
       //function saveDocument(){};
@@ -58,7 +57,8 @@ module.exports = function findOrCreateUser(req, res, stratId) {
           if (err){
             console.log(err);
           }
-          res.send({dbUser: user, dbPreset: preset});
+          console.log("new user account stuff is go")
+          res.location("/");
         });
       })
     };
