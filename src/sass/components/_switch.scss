@@ -1,8 +1,6 @@
 .switch-warp {
-	position: relative;
-	margin:0 auto;
+	margin: 0;
 	display: block;
-	padding: 0 0%;
 	input{
 		-webkit-appearance: none; 
 		-moz-appearance: none;
@@ -10,7 +8,7 @@
 	label {
 		width: 180px;
 		height: 60px;
-		margin:0 auto;
+		margin: 0;
 		cursor: pointer;
 		display: block;
 		position: relative;
@@ -29,7 +27,7 @@
 		z-index: 0;
 	}
 	label:before{content: "ON";float: left;left: 15px;}
-	label:after{content: "OFF";float: right;right: 15px;}
+	label:after{content: "";float: right;right: 15px;}
 	label:hover:before{color: red;}
 	label:hover:after{color: white;}
 	input {
@@ -83,4 +81,12 @@
 		background-color: #877f7d;
 		background-image: linear-gradient(0deg, #5b5755 0%, #696561 18.68%, #857f7d 50%, #9b9793 98.22%, #7d7979 100%);
 	}
+}
+
+.volume {
+	margin: 1em;
+}
+
+.switch {
+	width: 100%;
 }
