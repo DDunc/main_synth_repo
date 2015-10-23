@@ -107,6 +107,28 @@ var delayBetterAudioGraph = function() {
     this.delay.connect(this.ctx.destination);
 };
 
+var bassAudioGraph = function(opts) {
+
+  // create nodes and set values
+  console.log('Loaded delayAudioGraph Patch', this.name);
+
+  this.osc = this.ctx.createOscillator();
+  this.osc.frequency.value = this.frequency/4;
+
+  this.gainNode = this.ctx.createGain();
+  this.gainNode.gain.value = opts.volume || this.volume;
+
+  // connect osc to gain node
+  this.osc.connect(this.gainNode);
+  this.gainNode.connect(this.ctx.destination);
+
+};
+
+var audioTable = {
+  delay: delayBetterAudioGraph,
+  bass: bassAudioGraph
+};
+
 var Key = function(el, note) {
 
   // Web Audio Context, the Dom El and the note
@@ -118,6 +140,15 @@ var Key = function(el, note) {
   keyArr.push(this);
 
 };
+
+function presetReload (preset){
+  if(window.reloadPreset){
+    window.settings = preset.settings;
+    instrument = new Instrument(ctx);
+    window.reloadPreset = false;
+  }
+}
+
 
 Key.prototype.touchStart = function (){
     this.el.addEventListener('mousedown', function(e){
@@ -154,6 +185,8 @@ Key.prototype.touchEnd = function () {
   }.bind(this));
 };
 
+window.currentPreset = "delay";
+
 
 var Instrument = function(ctx) {
 
@@ -170,7 +203,9 @@ var Instrument = function(ctx) {
   this.keys = window.sharedState.keys;
   var note;
   for (var i=0; i<this.keyElements.length; i++) {
-    note = new BaseSynth(ctx,scale[i], delayBetterAudioGraph); // no 3rd arg means default synth
+    note = new BaseSynth(ctx, scale[i], function() {
+      return audioTable[window.currentPreset](window.settings);
+    }); // no 3rd arg means default synth
     this.keys['' + i] = new Key(this.keyElements[i], note, sharedState);
   }
   keyArr.forEach(function(key){
