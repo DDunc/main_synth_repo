@@ -96,7 +96,6 @@
 	</ul>
 </section>
 
-
 		<!-- SOME KIND OF NG-VIEW THING -->
 		<main ng-view>
 		</main>
@@ -104,12 +103,19 @@
 			<input type="search" ng-model="q" placeholder="filter user presets..."/>
 			<ul class="presetResults">
 				<li ng-repeat="preset in userPresets | filter:q as results">
-					<button ng-click="playPreset()">{{preset.patchName}}</button>
+          <p>name</p>
+          <button ng-click="playPreset()">play</button>
+          <button ng-click="deletePreset(preset._id)">delete
+          </button>
 				</li>
 				<li class="animate-repeat" ng-if="results.length == 0">
 					<strong>No presets found...bruh</strong>
 				</li>
 			</ul>
+      <br>
+      <button ng-click="savePreset()">Save Preset</button>
+      <br>
+      <label>Make Preset Public<input type="checkbox" ng-model="checkbox">
 		</section>
 		
 		<!-- FOOTER  -->
@@ -117,12 +123,9 @@
 			<ul>
 				<li><a href="/auth/google">LOGIN WITH GOOGLE</a></li>
 					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
-				<li><a href="#">TERMS OF USE</a></li>
-				<li><a href="#">PRIVACY POLICY</a></li>
-				<li><a href="#">CONTACT</a></li>
-				<li><a href="#">SUPPORT</a></li>
+				<li><a href="https://github.com/synthr/main_synth_repo">GITHUB</a></li>
 			</ul>
-      <br>    
+
 		</footer>
 		<!-- SCRIPT TAGS -->
 		<script src="js/packed.js"></script>

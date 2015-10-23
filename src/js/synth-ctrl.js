@@ -33,15 +33,14 @@ angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($s
       .then(function(res){
         //$scope.saveSuccess = "last preset saved successfully";
       console.log('saving preset successful!');
-        $scope.getPreset();
-        //do some stuff
+      alert("preset saved");
       }, function(res){
         console.log("something went wrong");
       });
   };
 
   $scope.removePreset = function(preset){
-    $http.delete("api/remove_preset" + preset.ownderId)
+    $http.delete("api/remove_preset" + preset)
       .then(function(res){
         //do some stuff
         console.log('removing preset successful!');
