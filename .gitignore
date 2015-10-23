@@ -33,7 +33,7 @@ Procfile
 env
 #database folder
 synth_dev
-build
+
 
 
 
