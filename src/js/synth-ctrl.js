@@ -9,7 +9,7 @@ angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($s
  $scope.signIn = function(){
     $http.get("/auth/google")
       .then(function(res){
-        $scope.profile = res.data; 
+        $scope.profile = res.data;
         console.log('Authentication successful!');
         
       }, function(res){
@@ -25,12 +25,13 @@ angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($s
         
   //     }, function(res){
   //       console.log(res);
-  //     }); 
+  //     });
   // };
 
   $scope.savePreset = function(preset){
     $http.post("api/save_preset", preset)
       .then(function(res){
+        //$scope.saveSuccess = "last preset saved successfully";
       console.log('saving preset successful!');
         $scope.getPreset();
         //do some stuff
