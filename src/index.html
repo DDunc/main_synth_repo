@@ -103,7 +103,7 @@
 			<input type="search" ng-model="q" placeholder="filter user presets..."/>
 			<ul class="presetResults">
 				<li ng-repeat="preset in userPresets | filter:q as results">
-          <p>{{preset.presetName}}</p>
+          <p>{{preset.patchName}}</p>
           <button ng-click="playPreset()">play</button>
           <button ng-click="deletePreset(preset._id)">delete
           </button>
@@ -114,7 +114,6 @@
       <br>
       <label>Make Preset Public<input type="checkbox" ng-model="checkbox">
 		</section>
-		
 		<!-- FOOTER  -->
 		<footer>
 			<ul>

@@ -1,5 +1,4 @@
 require("./synth-app.js");
-require('angular/angular');
 
 // ========= START OF CONTROLLER ======= //
 angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($scope, $http) {
