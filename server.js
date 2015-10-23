@@ -9,10 +9,9 @@ var session = require('express-session');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var handleError = require(__dirname + '/backend/lib/handle_error');
-//production mongoose
-//mongoose.connect(process.env.MONGOLAB_URI);
-//dev mongoose
-mongoose.connect('mongodb://localhost/synth_dev');
+//production and dev mongoose
+mongoose.connect(process.env.MONGOLAB_URI);
+//mongoose.connect('mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
 var presetRouter = require(__dirname + "/backend/routes/preset_routes");
@@ -22,14 +21,6 @@ var findOrCreateUser = require(__dirname + "/backend/lib/find_or_create");
 var FacebookStrategy = require("passport-facebook");
 var baseURL = process.env.HEROKU_URL || "http://localhost:";
 
-//var eventEmitter = require("events").EventEmitter;
-//var ee = new EventEmitter();
-//ee.emit('newUser', req, res){
-//}
-
-// API Access link for creating client ID and secret:
-// https://code.google.com/apis/console/
-// Get your codes here, put them in the .env file.
 var port = process.env.PORT || 3000;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 var GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
