@@ -21,7 +21,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: baseURL + port + "/auth/facebook/callback",
+    callbackURL: baseURL + "/auth/facebook/callback",
     enableProof: true
   },
   function(accessToken, refreshToken, profile, done) {
@@ -38,7 +38,7 @@ passport.use(new FacebookStrategy({
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: baseURL + port + "/auth/google/return"
+    callbackURL: baseURL + "/auth/google/return"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, will need to be refactored
