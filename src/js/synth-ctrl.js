@@ -40,7 +40,7 @@ angular.module('synthy').controller('SynthCtrl', ["$scope", "$http", function($s
   };
 
   $scope.removePreset = function(preset){
-    $http.delete("api/remove_preset" + preset.ownderId)
+    $http.delete("api/remove_preset" + preset)
       .then(function(res){
         //do some stuff
         console.log('removing preset successful!');

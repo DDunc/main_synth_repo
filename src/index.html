@@ -34,7 +34,7 @@
 
 <section ontouchstart="" id="synthesizer" class="sequencer">
 	<ul>
-		<li><div href="#" id="pad-0" class="sequencer-div press pad inactive">1</div></li>
+		<li><button href="#" id="pad-0" class="sequencer-button press pad inactive">1</button></li>
 		<li><button href="#" id="pad-1" class="sequencer-button press pad inactive">2</button></li>
 		<li><button href="#" id="pad-2" class="sequencer-button press pad inactive">3</button></li>
 		<li><button href="#" id="pad-3" class="sequencer-button press pad inactive">4</button></li>
@@ -54,7 +54,7 @@
 		<li>
 			<button id="key-0" class="key white-key">1</button>
 			<ul class="black-key">
-				<li><div id="key-8" class="key">9</div></li>
+				<li><button id="key-8" class="key">9</button></li>
 			</ul>
 		</li>
 		<li>
@@ -82,13 +82,42 @@
 			<button id="key-5" class="key white-key">6</button>
 			<ul class="black-key">
 				<li><button id="key-12" class="key">13</button></li>
-      </ul>
+			</ul>
+		</li>
+		<li>
+			<button id="key-6" class="key white-key">7</button>
+			<ul class="black-key">
+				<li><button id="key-13" class="key">14</button></li>
+			</ul>
+		</li>
+		<li>
+			<button id="key-7" class="key white-key">8</button>
+		</li>
+	</ul>
 </section>
 
 		<!-- SOME KIND OF NG-VIEW THING -->
 		<main ng-view>
-
 		</main>
+		<section class="presets">
+			<input type="search" ng-model="q" placeholder="filter user presets..."/>
+			<ul class="presetResults">
+				<li ng-repeat="preset in userPresets | filter:q as results">
+          <p>name</p>
+          <button ng-click="playPreset()">play</button>
+          <button ng-click="deletePreset(preset._id)">delete
+          </button>
+				</li>
+				<li class="animate-repeat" ng-if="results.length == 0">
+					<strong>No presets found...bruh</strong>
+				</li>
+			</ul>
+      <br>
+      <button ng-click="savePreset()">Save Preset</button>
+      <br>
+      <label>Make Preset Public<input type="checkbox" ng-model="checkbox">
+		</section>
+		
 		<!-- FOOTER  -->
 		<footer>
 			<ul>
@@ -96,21 +125,7 @@
 					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
 				<li><a href="https://github.com/synthr/main_synth_repo">GITHUB</a></li>
 			</ul>
-      <br>
-      <button ng-click="savePreset()">Save Preset</button>
-      <label>Make Preset Public<input type="checkbox" ng-model="checkboxModel.value1">
-  </label><br/>
-      <br>
-      <input type="search" ng-model="q" placeholder="filter user presets..."/>
-      <ul class="presetResults">
-        <li ng-repeat="preset in userPresets | filter:q as results">
-          <button ng-click="getPreset()">{{preset.patchName}}</button>
-        </li>
-        <li class="animate-repeat" ng-if="results.length == 0">
-          <strong>No presets found...bruh</strong>
-        </li>
-      </ul>
-    
+
 		</footer>
 		<!-- SCRIPT TAGS -->
 		<script src="js/packed.js"></script>
