@@ -7,7 +7,7 @@ gulp.task('watch', function() {
   gulp.watch(config.index.src, ['index']);
   gulp.watch(config.html.src, ['html']);
 
-  gulp.watch(['./node_modules/angular/angular.js', './node_modules/angular-route/angular-route.js', './node_modules/angular-ui-router','./src/js/scale_generator.js','./src/js/note.js','./src/js/instrument.js']);
+ gulp.watch(['./node_modules/angular/angular.js', './node_modules/angular-route/angular-route.js', './node_modules/angular-ui-router','./src/js/scale_generator.js','./src/js/note.js','./src/js/instrument.js']);
   // Watchify will watch and recompile our JS, so no need to gulp.watch it
 });
 

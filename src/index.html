@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="synthy">
+<html ng-app="synthy" lang="en">
 	<head>
 	<script>
   window.fbAsyncInit = function() {
@@ -52,9 +52,9 @@
 <section ontouchstart="" id="instrument" class="keyboard">
 	<ul>
 		<li>
-			<button id="key-0" class="key white-key">1</button>
+			<div id="key-0" class="key white-key">1</div>
 			<ul class="black-key">
-				<li><button id="key-8" class="key">9</button></li>
+				<li><div id="key-8" class="key">9</div></li>
 			</ul>
 		</li>
 		<li>
@@ -96,7 +96,6 @@
 	</ul>
 </section>
 
-
 		<!-- SOME KIND OF NG-VIEW THING -->
 		<main ng-view>
 		</main>
@@ -104,25 +103,25 @@
 			<input type="search" ng-model="q" placeholder="filter user presets..."/>
 			<ul class="presetResults">
 				<li ng-repeat="preset in userPresets | filter:q as results">
-					<button ng-click="playPreset()">{{preset.patchName}}</button>
-				</li>
-				<li class="animate-repeat" ng-if="results.length == 0">
-					<strong>No presets found...bruh</strong>
+          <p>{{preset.patchName}}</p>
+          <button ng-click="playPreset()">play</button>
+          <button ng-click="deletePreset(preset._id)">delete
+          </button>
 				</li>
 			</ul>
+      <br>
+      <button ng-click="savePreset()">Save Preset</button>
+      <br>
+      <label>Make Preset Public<input type="checkbox" ng-model="checkbox">
 		</section>
-		
 		<!-- FOOTER  -->
 		<footer>
 			<ul>
 				<li><a href="/auth/google">LOGIN WITH GOOGLE</a></li>
 					<li><a href="/auth/facebook">LOGIN WITH FACEBOOK</a></li>
-				<li><a href="#">TERMS OF USE</a></li>
-				<li><a href="#">PRIVACY POLICY</a></li>
-				<li><a href="#">CONTACT</a></li>
-				<li><a href="#">SUPPORT</a></li>
+				<li><a href="https://github.com/synthr/main_synth_repo">GITHUB</a></li>
 			</ul>
-      <br>    
+
 		</footer>
 		<!-- SCRIPT TAGS -->
 		<script src="js/packed.js"></script>
