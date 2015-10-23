@@ -20,6 +20,7 @@ var userRouter = require(__dirname + "/backend/routes/user_routes");
 var ensureAuthenticated = require(__dirname + "/backend/lib/ensureAuth");
 var findOrCreateUser = require(__dirname + "/backend/lib/find_or_create");
 var FacebookStrategy = require("passport-facebook");
+var baseURL = process.env.HEROKU_URL || "http://localhost:";
 
 //var eventEmitter = require("events").EventEmitter;
 //var ee = new EventEmitter();
@@ -52,7 +53,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:" + port + "/auth/facebook/callback",
+    callbackURL: baseURL + port + "/auth/facebook/callback",
     enableProof: true
   },
   function(accessToken, refreshToken, profile, done) {
@@ -69,7 +70,7 @@ passport.use(new FacebookStrategy({
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:" + port + "/auth/google/return"
+    callbackURL: baseURL + port + "/auth/google/return"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, will need to be refactored
@@ -79,8 +80,9 @@ passport.use(new GoogleStrategy({
     process.nextTick(function () {
     //second argument gets added to req.user
       return done(null, profile);
-  }
-  )}));
+    }
+  )}
+));
 
 var app = express();
 
@@ -89,6 +91,7 @@ app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(methodOverride());
+//for development only, use mongo-connect for actual solution
 app.use(session({
   secret: 'helloNSA',
   resave: true,
