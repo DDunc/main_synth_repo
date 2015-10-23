@@ -31,7 +31,9 @@ node_modules
 .env
 Procfile
 build
+env
 #database folder
 synth_dev
 
-.env
+
+
