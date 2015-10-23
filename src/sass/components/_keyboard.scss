@@ -1,5 +1,6 @@
 @import "keyboard/key";
 
+
 .keyboard {
 	position: relative;
 	button {
@@ -47,4 +48,12 @@
 		color: red;
 		box-shadow: 0 0.188em 0.313em 0 rgba(0,0,0,.1), inset 0 -0.188em 0.063em 0.063em rgba(60,60,60, .2);
 	}
+}
+
+#key-0 {
+	display: none;
+}
+
+#key-8 {
+	display: none;
 }

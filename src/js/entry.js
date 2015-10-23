@@ -1,3 +1,4 @@
+require("./instrument.js");
 require("./synth-app.js");
 require("./synth-ctrl.js");
 
