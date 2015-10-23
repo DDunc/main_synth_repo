@@ -120,7 +120,7 @@ var Key = function(el, note) {
 };
 
 Key.prototype.touchStart = function (){
-    this.el.addEventListener('touchstart', function(e){
+    this.el.addEventListener('mousedown', function(e){
     var keyId;
     if (e.target.className === 'key') {
       keyId = e.target.id.split('-')[1];
@@ -137,7 +137,7 @@ Key.prototype.touchStart = function (){
 };
 
 Key.prototype.touchEnd = function () {
-    this.el.addEventListener('touchend', function(e){
+    this.el.addEventListener('mouseup', function(e){
     this.note.stop();
     var keyId;
     if (e.target.className === 'key') {
@@ -162,7 +162,7 @@ var Instrument = function(ctx) {
   this.el = document.getElementById('instrument');
   this.exportButton = document.getElementById('exportButton');
   this.volumeSlider = document.getElementById('volumeSlider');
-  this.keyElements = this.el.querySelectorAll('button.key');
+  this.keyElements = this.el.querySelectorAll('button');
 
   // a keys model container
   // and a reference to shared sharedState object, 'sharedState'
@@ -194,7 +194,7 @@ Instrument.prototype.exportInstrumentSettings = function() {
 
   var settings = this.keys[0]; 
 
-  this.exportButton.addEventListener('touchstart', function(e) {
+  this.exportButton.addEventListener('mousedown', function(e) {
     window.instrumentExport = {
       patchName : settings.patchName,
       freqRange: {
@@ -216,7 +216,7 @@ var Pad = function(el) {
 
   // event Handlers
   var self = this;
-  this.el.addEventListener('touchstart', function(e) {
+  this.el.addEventListener('mousedown', function(e) {
 
     var padId;
     if (e.target.className.split(' ')[0] === 'pad') {
