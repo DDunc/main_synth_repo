@@ -3,13 +3,13 @@ var keyArr = [];
 var Key = function(el, note) {
 
   // Web Audio Context, the Dom El and the note
-  
   this.el = el;
   this.note = note;
   this.noteName = note.noteName;
   this.patchName = note.patchName;
   this.freq = note.frequency.value;
   keyArr.push(this);
+
 };
 
 Key.prototype.touchStart = function (){
@@ -20,7 +20,7 @@ Key.prototype.touchStart = function (){
     }
     // start the sound (increase gain from 0 to 1)
     this.note.start();
-    console.log('gain: ', this.note.gainNode.gain.value);
+    console.log('gain: ', this.note.volume);
     // append new values to object
     sharedState.keys[keyId].active = true;
     sharedState.keys[keyId].startTime = new Date().getTime();
@@ -63,7 +63,7 @@ var Instrument = function(ctx) {
   this.keys = window.sharedState.keys;
   var note;
   for (var i=0; i<this.keyElements.length; i++) {
-    note = new Note(ctx,scale[i]);
+    note = new BaseSynth(ctx,scale[i], delayBetterAudioGraph); // no 3rd arg means default synth
     this.keys['' + i] = new Key(this.keyElements[i], note, sharedState);
   }
   keyArr.forEach(function(key){
