@@ -1,0 +1,59 @@
+@import "keyboard/key";
+
+
+.keyboard {
+	position: relative;
+	button {
+		border-color: black;
+		width: 12%;
+		text-align: center;
+		font-size: 1em;
+		text-decoration: none;
+		border-radius: 1em;
+	}
+	ul {
+		display: inline;
+		li {
+			display: inline;
+		}
+	}
+}
+
+.white-key {
+	@include button-animation($color-eight, $color-one);
+	height: 20em;
+	z-index: -1;
+}
+
+.white-key:active {
+	color: red;
+	box-shadow: 0 0.188em 0.313em 0 rgba(0,0,0,.1), inset 0 -0.188em 0.063em 0.063em rgba(150,150,150, .2);
+}
+
+.black-key {
+	li {
+		width: 12.3%;
+		position: absolute;
+	}
+	button {
+		@include button-animation($color-eight, $color-three);
+		background-color: $color-five;
+		position: relative;
+		width: 100%;
+		height: 10em;
+		z-index: 1;
+		right: 50%;
+	}
+	button:active {
+		color: red;
+		box-shadow: 0 0.188em 0.313em 0 rgba(0,0,0,.1), inset 0 -0.188em 0.063em 0.063em rgba(60,60,60, .2);
+	}
+}
+
+#key-0 {
+	display: none;
+}
+
+#key-8 {
+	display: none;
+}

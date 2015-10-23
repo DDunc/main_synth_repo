@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="synthy" lang="en">
+<html lang="en">
 	<head>
 	<script>
   window.fbAsyncInit = function() {
@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="css/main.css">
 		<title>Websynth</title>
 	</head>
-	<body ng-controller="SynthCtrl" ng-init="getPreset()">
+	<body ng-app="synthy" ng-controller="SynthCtrl" ng-init="getPreset()">
 		<!-- NAV -->
 		<header class="header-container">
 			<h1 class="logo"></h1>
