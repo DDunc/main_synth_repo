@@ -15,4 +15,7 @@ var presetSchema = new mongoose.Schema({
 // 1) search the users collection, find the ID, then use that ID
 //when setting to public, checks if presetname is already in DB, if it is, don't add it, return
 //message that name already exists
+
+//preSetSchema.methods.loadIn = function() { };
+
 module.exports = mongoose.model('Preset', presetSchema);
