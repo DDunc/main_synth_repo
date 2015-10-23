@@ -10,9 +10,9 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var handleError = require(__dirname + '/backend/lib/handle_error');
 //production mongoose
-mongoose.connect(process.env.MONGOLAB_URI);
+//mongoose.connect(process.env.MONGOLAB_URI);
 //dev mongoose
-//mongoose.connect('mongodb://localhost/synth_dev');
+mongoose.connect('mongodb://localhost/synth_dev');
 var User = require(__dirname + "/models/user");
 var Preset = require(__dirname + "/models/preset");
 var presetRouter = require(__dirname + "/backend/routes/preset_routes");
